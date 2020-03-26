@@ -1,0 +1,30 @@
+srun -p compute --time=01:00:00 --ntasks-per-node=1 --mem=10gb --pty bash
+
+conda create --name untargmetab
+conda activate untargmetab
+conda install -c r r=3.6.0 r-essentials
+# outputs SafetyError about different size packages compiled but seems to work fine
+conda install r-ncdf4 -c conda-forge
+
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+
+conda install -c conda-forge r-biocmanager
+conda install -c bioconda bioconductor-mzr
+conda install -c bioconda bioconductor-msnbase
+conda install -c bioconda proteowizard
+conda install -c bioconda snakemake
+R
+library(BiocManager)
+BiocManager::install("xcms")
+
+BiocManager::install("Autotuner")
+library(Autotuner)
+#Autotuner v.1.0 should pop up!
+
+# We want the newest version though so install from git
+library(devtools)
+install_github("crmclean/autotuner")
+# Now we see Autotuner v.1.1.1
+

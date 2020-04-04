@@ -1,43 +1,26 @@
-usePath <- "/vortexfs1/omics/kujawinski/data/biosscope_untarg"
+args = commandArgs(trailingOnly=TRUE)
+suppressMessages(library(dplyr))
+
+# Read in list of all mz files and specifiy (in sbatch command) the ion Mode
+usePath <- "/vortexfs1/omics/kujawinski/data/biosscope_untarg_mzml"
 ext <- ".mzML"
 pre <- paste0(usePath,"/")
-mzdatafiles <- list.files(usePath,recursive = FALSE, full.names=TRUE, pattern=ext)
-wDir <-  "/vortexfs1/home/emcparland/untarg_xcms"
-csvfile <- list.files(usePath,recursive=FALSE,full.name=TRUE,pattern=".csv")
-all<-read.csv(csvfile,skip=1,header=TRUE)
-putDataHere <-data.frame()
+mzdatafiles <- list.files(usePath,recursive = FALSE, full.names=TRUE, pattern=glob2rx(paste0("*",args[1],"*",ext)))
 
-#what data do I want to keep...put that here
-keep = "pos.1"
+# Read in list of all csv files from sequence methods and specificy ion Mode
+csvfile <- list.files(usePath, recursive=FALSE, full.name=TRUE, pattern=glob2rx(paste0("*",args[1],"*",".csv")))
 
-for(i in 1:length(all$File.Name)) {
-  h <- all$File.Name[i] 
-  h <-paste0(pre,h,ext)
-  
-  # pull tData now, so I can look for a match with the 'keep' variable I set at line 63
-  tData <- all[i,]
-  test = paste0(tData$ionMode,".",tData$goodData)
-  
-  # only proceed if test == keep
-  tm = match(test,keep)
-  if (!is.na(tm)) {
+# Combine all of your files into one
+all_csv<-bind_rows(lapply(csvfile,read.csv,skip=1))
 
-  # this will pick up the right row in mzdatafiles
-    m <- match(basename(h),basename(mzdatafiles))
-    if (!is.na(m)) {
-      if (nrow(putDataHere)==0) {
-        putDataHere <- tData
-        putDataHere$FileWithExtension <- basename(h)
-        } else {
-          useIdx = nrow(putDataHere)+1
-          putDataHere[useIdx,] <-tData
-          putDataHere$FileWithExtension[useIdx] <- basename(h)
-          rm(useIdx)
-        }
-    }
-    rm(m)
-  } #this ends the final if statement
-    rm(h,test,tData,tm) 
-}
-rm(all)
-write.table(putDataHere,"metadata.txt",append = FALSE, sep = "\t",row.names = FALSE,col.names=TRUE,quote=FALSE)
+# This is just a blank row generated when exported that we don't need
+all_csv$Sample.ID<-NULL
+
+# Filter all to keep just the ionMode and goodData of interest
+all_csv<-all_csv[which(all_csv$ionMode==args[1] & all_csv$goodData==1),]
+
+# Add a column with the full file basename
+all_csv$FileWithExtension<-paste0(all_csv$File.Name,ext)
+
+# Check you didn't make any mistakes and then Write file
+if(all(all_csv$FileWithExtension %in% basename(mzdatafiles))==TRUE){ write.table(all_csv,"metadata.txt",append = FALSE, sep = "\t",row.names = FALSE,col.names=TRUE,quote=FALSE)}

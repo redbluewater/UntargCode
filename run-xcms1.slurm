@@ -5,10 +5,10 @@
 #SBATCH --mail-user=emcparland@whoi.edu
 #SBATCH --ntasks=1
 #SBATCH --mem=4000
-#SBATCH --time=01:30:00
+#SBATCH --time=12:00:00
 #SBATCH --output=xcms1_%A-%a.out
 #SBATCH --error=xcms1_%A-%a.error
-#SBATCH --array=1-107%40
+#SBATCH --array=1-502%40
 
 dir="$HOME/untarg_xcms"
 cd "$dir"

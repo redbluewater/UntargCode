@@ -7,17 +7,16 @@ This is a quick R script to create a tab-delimited metadata file of all the sequ
 
 ```sbatch scripts_dir/run-metadata.slurm```
 
-Check how many files you have
-```wc -l metadata.txt```
+Check how many files you have ```wc -l metadata.txt```
 
 I have 502 and I will use this number in Step 2 to set the total number of array jobs that will be run.
 
 ## Step 2: peak picking and peak shape evaluation
 Run the peak picking and peak shape on each file individually.
+
 ```sbatch scripts_dir/run-xcms1.slurm```
 
-Update status of jobs to your screen if you're interested (this is how I got the issue below of skipping files)
-```watch -n 60 squeue -u emcparland```
+Update status of jobs to your screen if you're interested (this is how I got the issue below of skipping files) ```watch -n 60 squeue -u emcparland```
 
 Important note about activating conda environment on hpc with slurm:
 - Remember that this is a new compute environment for each array so it doesn't know about your conda init
@@ -30,12 +29,14 @@ Important note about activating conda environment on hpc with slurm:
 ```conda activate untargmetab```
 
 -However, as of today (3/24) the script was still throwing the same error randomly when I run larger arrays (though not as many as before?)
+
 -One step further, seems like this is an issue of running the array and initializing the environment every time. For some reason the conda activate initializes the path every time and sometimes the path doesn't exist?! I don't fully understand this yet but it seems to be an unresolved issue on git. A fix proposed by another git user and that seems to be working for me is to edit the activate-r-base.sh script in the environment:
 
 ```nano ~/.conda/envs/untargmetab/etc/conda/activate.d/activate-r-base.sh```
 
-comment out the "R CMD javareconf" line to look like this: ```#!/usr/bin/env sh```
+comment out the "R CMD javareconf" line to look like this: 
 
+```#!/usr/bin/env sh```
 ```#R CMD javareconf > /dev/null 2>&1 || true ```
 
 ## Step 3: combine picked peaks and perform retention time correction

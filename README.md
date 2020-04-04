@@ -25,17 +25,18 @@ Important note about activating conda environment on hpc with slurm:
 - This seems to be a problem for [others](https://github.com/conda-forge/r-base-feedstock/issues/67)
 - One suggested solution was to use the newer command 'conda activate myenv'. To do this you need to source your conda.sh, you'll see this in the code as:
 
-```CONDA_BASE=$(conda info --base)
-source $CONDA_BASE/etc/profile.d/conda.sh
-conda activate untargmetab```
+```CONDA_BASE=$(conda info --base)```
+```source $CONDA_BASE/etc/profile.d/conda.sh```
+```conda activate untargmetab```
 
 -However, as of today (3/24) the script was still throwing the same error randomly when I run larger arrays (though not as many as before?)
 -One step further, seems like this is an issue of running the array and initializing the environment every time. For some reason the conda activate initializes the path every time and sometimes the path doesn't exist?! I don't fully understand this yet but it seems to be an unresolved issue on git. A fix proposed by another git user and that seems to be working for me is to edit the activate-r-base.sh script in the environment:
 
 ```nano ~/.conda/envs/untargmetab/etc/conda/activate.d/activate-r-base.sh```
-comment out the "R CMD javareconf" line to look like this:
-```#!/usr/bin/env sh
-#R CMD javareconf > /dev/null 2>&1 || true ```
+
+comment out the "R CMD javareconf" line to look like this: ```#!/usr/bin/env sh```
+
+```#R CMD javareconf > /dev/null 2>&1 || true ```
 
 ## Step 3: combine picked peaks and perform retention time correction
 This will combine all of your peak picked and filtered xcms objects into one object. Then it will use xcms to perform orbiwarp retention time correction, peak grouping, and fill peaks. At each stage a new RData object is saved in case something crashes in the middle or you want to look at the files while they are running. Finally it will output two csv files, one with all of the peaks ("aligned.csv") and the second with the feature count table ("picked.csv")

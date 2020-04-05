@@ -14,7 +14,7 @@ maxWidth<-9
 minWidth<-3
 groupDiff<-1.1
 
-usePath <- "/vortexfs1/omics/kujawinski/data/biosscope_untarg"
+usePath <- "/vortexfs1/omics/kujawinski/data/biosscope_untarg_mzml"
 ext <- ".mzML"
 pre <- paste0(usePath,"/")
 

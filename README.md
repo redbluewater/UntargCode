@@ -48,7 +48,7 @@ If you have not used jupyter remotely on an hpc check out the [blog posts by the
 
 ```jupyter notebook --no-browser --port=9000 --ip=0.0.0.0```
 
-Make sure I know the login number and node and then create an ssh tunnel on my local computer with: ```ssh -N -f -L 9000:pn112:9000 emcparland@poseidon-l1.whoi.edu```
+Make sure I know the login number and node and then create an ssh tunnel on my local computer with: ```ssh -N -f -L port:node:port username@hpc```
 
 Type into local browser: ```localhost:9000``` and voila!
 

@@ -65,7 +65,7 @@ To speed up peak picking, we performed peak picking as an array. Now combine int
 ```sbatch scripts_dir/run-xcms2_combine.slurm```
 
 ## Step 5: perform retention time correction, grouping and fill peaks
-This will combine all of your peak picked and filtered xcms objects into one object. Then it will use xcms to perform orbiwarp retention time correction, peak grouping, and fill peaks. At each stage a new RData object is saved in case something crashes in the middle or you want to look at the files while they are running. Finally it will output two csv files, one with all of the peaks ("aligned.csv") and the second with the feature count table ("picked.csv")
+This will use xcms to perform orbiwarp retention time correction, peak grouping, and fill peaks. As I ran a pooled sample every five samples in these batches, I use the subset option for retention time alignment and peak grouping. At each stage a new RData object is saved in case something crashes in the middle or you want to look at the files while they are running. Finally it will output two csv files, one with all of the peaks ("aligned.csv") and the second with the feature count table ("picked.csv")
 
 Note: For reference, when I was testing this code with ~100 samples, I could run this on one 'small' memory node of 185GB. However, my actual dataset of 500+ samples required being run on the 'bigmem' partition with 500GB of memory.
 

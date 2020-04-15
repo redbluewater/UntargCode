@@ -16,18 +16,32 @@ ionMode<- paste0(args[3])
 register(BPPARAM = MulticoreParam(workers=36))
 
 # Parameters from autotuner
-load("autotuneparams.RData")
+load(paste0("autotuneparams_",ionMode,".RData"))
 
+# Load the MS OnDisk object combined in previous script
 load(file=paste0(input_dir,"/xset-",ionMode,".RData"))
 
+# Add variable for subsetting
+idx<-which(xset@phenoData$Sample.Name ==  paste0("BIOSSCOPE pool ",ionMode))
+xset@phenoData$subset.name <- "sample"
+xset@phenoData$subset.name[idx] <- "pool"
+
 # RT correction
-xset_obi <- adjustRtime(xset, param = ObiwarpParam(binSize = 0.1,distFun = "cor", gapInit = 0.3, gapExtend = 2.4), msLevel = 1L)
+prm <- ObiwarpParam(subset= which(xset@phenoData$subset.name == "pool"), subsetAdjust="average", binSize = 0.1,distFun = "cor", gapInit = 0.3, gapExtend = 2.4)
+prm
+
+xset_obi <- adjustRtime(xset, param = prm, msLevel = 1L)
 rm(xset)
 save(list=c("xset_obi"), file = paste0(output_dir,"/xcms2_obi-",ionMode,".RData"))
 print("Completed xcms obiwarp")
 
+# Add variable for grouping(subsetting)
+idx<-which(xset_obi@phenoData$Sample.Name ==  paste0("BIOSSCOPE pool ",ionMode))
+xset_obi@phenoData$subset.name <- "sample"
+xset_obi@phenoData$subset.name[idx] <- "pool"
+
 # Grouping
-pdp<-PeakDensityParam(sampleGroups = rep(1, length(fileNames(xset_obi))), minFraction = 0.1, minSamples = 1, bw = groupDiff)
+pdp<-PeakDensityParam(sampleGroups = xset_obi@phenoData$subset.name, minFraction = 0.1, minSamples = 1, bw = groupDiff)
 xset_gc<-groupChromPeaks(xset_obi, param = pdp)
 rm(xset_obi)
 save(list=c("xset_gc"), file = paste0(output_dir,"/xcms2_gc-",ionMode,".RData"))

@@ -1,0 +1,10 @@
+﻿,neg,pos
+minw,5,7
+maxw,14,14
+noise,100,100
+ppm,15,15
+prescan,3,3
+preintensity,500,900
+snthresh,5,5
+rmse,0.125,0.125
+bw,0.7,0.7

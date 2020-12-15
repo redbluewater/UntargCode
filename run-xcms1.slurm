@@ -8,7 +8,7 @@
 #SBATCH --time=12:00:00
 #SBATCH --output=xcms1_%A-%a.out
 #SBATCH --error=xcms1_%A-%a.error
-#SBATCH --array=1-500%40
+#SBATCH --array=1-502%40
 
 dir="$HOME/untarg_xcms"
 cd "$dir"
@@ -25,8 +25,8 @@ echo This is task $SLURM_ARRAY_TASK_ID
 
 CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh
-conda activate untargmetab
+conda activate untargmetabR4
 
-Rscript --no-save --no-restore --verbose $dir/scripts_dir/xcms1.R "$in_dir" "neg" "$SLURM_ARRAY_TASK_ID" "$out_dir" > "$out_dir/${SLURM_JOB_NAME}_neg_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.Rout" 2>&1 > "$out_dir/${SLURM_JOB_NAME}_neg_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.log"
+Rscript --no-save --no-restore --verbose $dir/scripts_dir/xcms1.R "$in_dir" "pos" "$SLURM_ARRAY_TASK_ID" "$out_dir" > "$out_dir/${SLURM_JOB_NAME}_pos_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.Rout" 2>&1 > "$out_dir/${SLURM_JOB_NAME}_pos_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.log"
 
 echo `date`

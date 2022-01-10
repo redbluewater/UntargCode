@@ -9,10 +9,10 @@
 #SBATCH --output=meta.out
 #SBATCH --error=meta.error
 
-dir="$HOME/untarg_xcms"
+dir="$HOME/UntargCode"
 cd "$dir"
 
-in_dir="/vortexfs1/omics/kujawinski/data/biosscope_untarg_mzml"
+in_dir="/vortexfs1/omics/kujawinski/data/SargPatch"
 
 CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh

@@ -2,7 +2,7 @@
 #SBATCH --partition=compute
 #SBATCH --job-name=xcms-combine
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=klongnecker@whoi.edu
+###SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=36
 #SBATCH --mem=175gb

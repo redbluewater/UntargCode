@@ -1,3 +1,4 @@
+#KL updated 1/11/2022 to work with SargPatch samples
 args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(xcms))
 suppressMessages(library(BiocParallel))
@@ -24,8 +25,8 @@ bw <- params['bw',ionMode]
 # Load the MS OnDisk object combined in previous script
 load(file=paste0(input_dir,"/xset-",ionMode,".RData"))
 
-# Add variable for subsetting
-idx<-which(xset@phenoData$Sample.Name ==  paste0("BIOSSCOPE pool ",ionMode))
+# Add variable for subsetting (KL note - generic beginning to sample names)
+idx<-which(xset@phenoData$Sample.Name ==  paste0("AE2114 Sarg pool ",ionMode))
 xset@phenoData$subset.name <- "sample"
 xset@phenoData$subset.name[idx] <- "pool"
 
@@ -38,11 +39,11 @@ rm(xset)
 print("Completed xcms obiwarp")
 
 # Add variable for grouping(subsetting)
-idx<-which(xset_obi@phenoData$Sample.Name ==  paste0("BIOSSCOPE pool ",ionMode))
+idx<-which(xset_obi@phenoData$Sample.Name ==  paste0("AE2114 Sarg pool ",ionMode))
 xset_obi@phenoData$subset.name <- "sample"
 xset_obi@phenoData$subset.name[idx] <- "pool"
 
-# Grouping
+# Grouping (KL note - generic beginning to sample names)
 pdp<-PeakDensityParam(sampleGroups = xset_obi@phenoData$subset.name, minFraction = 0.1, minSamples = 1, bw = bw)
 xset_gc<-groupChromPeaks(xset_obi, param = pdp)
 rm(xset_obi)
@@ -61,11 +62,11 @@ save(list=c("processedData"), file = paste0(output_dir,"/xcms2_final-",ionMode,"
 
 # Output all peaks and save
 allPeaks<-chromPeaks(processedData)
-write.csv(allPeaks, file = paste0(output_dir,"/BATSuntarg_",ionMode,"_aligned.csv"))
+write.csv(allPeaks, file = paste0(output_dir,"/SargPatch_untarg_",ionMode,"_aligned.csv"))
 
 # Output features and save
 featuresDef<-featureDefinitions(processedData)
 featuresIntensities<-featureValues(processedData, value = "into", method = "maxint")
 dataTable<-merge(featuresDef, featuresIntensities, by = 0, all = TRUE)
 dataTable <-dataTable[, !(colnames(dataTable) %in% c("peakidx"))]
-write.csv(dataTable, file = paste0(output_dir,"/BATSuntarg_",ionMode,"_picked.csv"))
+write.csv(dataTable, file = paste0(output_dir,"/SargPatch_untarg_",ionMode,"_picked.csv"))

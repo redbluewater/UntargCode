@@ -1,6 +1,6 @@
 suppressMessages(library(xcms))
 
-setwd("~/untarg_xcms/output_dir/xcms2")
+setwd("~/UntargCode/output_dir/xcms2")
 
 # polarity mode
 mode <- "pos"

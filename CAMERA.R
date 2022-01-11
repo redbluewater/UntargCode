@@ -1,7 +1,7 @@
 suppressMessages(library(xcms))
 suppressMessages(library(CAMERA))
 
-setwd("~/untarg_xcms/output_dir/xcms2")
+setwd("~/UntargCode/output_dir/xcms2")
 
 # Ion Mode
 modes <- c("pos","neg")
@@ -15,7 +15,7 @@ for (i in 1:2){
 	xset <- readRDS(paste0(mode,"_xset.rds"))
 
 # Create idx for just samples. Create annotate object. Note could use sample = NA which allows CAMERA to choose reresentative sample for each pseudospectra. Might save time?
-idx <- grep("BIOSSCOPE pool |MQ Blank", processedData@phenoData@data$Sample.Name, invert = T)
+idx <- grep("AE2114 Sarg pool |MQ Blank", processedData@phenoData@data$Sample.Name, invert = T)
 nSamples <- length(idx)
 xsa<-xsAnnotate(xset,sample=idx)
 

@@ -2,7 +2,7 @@
 #SBATCH --partition=bigmem
 #SBATCH --job-name=xcms2
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=klongnecker@whoi.edu
+###SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks-per-node=36
 #SBATCH --mem=1000gb
 #SBATCH --time=6:00:00

@@ -2,7 +2,7 @@
 #SBATCH --partition=scavenger
 #SBATCH --job-name=camera
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=klongnecker@whoi.edu
+###SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks-per-node=12
 #SBATCH --mem=20gb
 #SBATCH --time=6:00:00

@@ -12,7 +12,7 @@
 dir="$HOME/UntargCode"
 cd "$dir"
 
-in_dir="/vortexfs1/omics/kujawinski/data/SargPatch"
+in_dir="/vortexfs1/omics/kujawinski/data/SargPatch/SargPatch_MSn"
 
 CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh

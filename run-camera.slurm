@@ -2,7 +2,7 @@
 #SBATCH --partition=scavenger
 #SBATCH --job-name=camera
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=emcparland@whoi.edu
+#SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks-per-node=12
 #SBATCH --mem=20gb
 #SBATCH --time=6:00:00
@@ -20,7 +20,7 @@ echo This is job $SLURM_JOB_ID
 
 CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh
-conda activate untargmetabR4
+conda activate untargmetab
 
 Rscript --no-save --no-restore --verbose $dir/scripts_dir/CAMERA.R "$work_dir" > "$work_dir/${SLURM_JOB_NAME}_${SLURM_JOB_ID}.Rout" 2>&1 > $work_dir/${SLURM_JOB_NAME}_${SLURM_JOB_ID}.log
 

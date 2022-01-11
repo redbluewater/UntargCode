@@ -6,15 +6,14 @@ suppressMessages(library(dplyr))
 
 # #use these rows for troubleshooting locally
 # in_dir="C:/Users/klongnecker/Documents/Current projects/Kujawinski_BIOS-SCOPE/RawData/Lumos/sequence_fromMethods"
+# usePath <- paste0(in_dir)
 # ionMode <- "pos"
 
 #this is the version for the HPC and the slurm script
 usePath <- paste0(args[1])
 ionMode<-paste0(args[2])
 
-
 # Read in list of all mz files and specify (in sbatch command) the ion Mode
-usePath <- paste0(in_dir)
 ext <- ".mzML"
 pre <- paste0(usePath,"/")
 

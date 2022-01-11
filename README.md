@@ -1,48 +1,54 @@
 # Pipeline for pre-processing a multi-batch untargeted exometabolome experiment with XCMS on a HPC
 :construction: :warning: This is a **work in progress** :construction: :warning:
 
-*A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*
+I (Krista) am working off the code written by Erin McParland and updating the information in the README file here as I go. I am a newbie to the HPC, so some details here may be obvious to others, but I needed more information before I could get started. First up, remember to edit the slurm scripts so they send the email notifications to the right person.
 
-**As is, you could run this in your own compute space by installing the conda environment and altering the paths and inputs in the run files. But if you have a different experimental setup, you should also have a look at the R scripts**
+
+**You should edit the parameter in the R scripts to values appropriate for your experimental system.**
+
+## How to access Poseidon, WHOI's HPC computing environment
+I used a Git Bash terminal window to log into poseidon. From WHOI's internal Information Systems' website, I learned I needed the following command:
+```ssh username@poseidon.whoi.edu```
+The password is my WHOI Active Directory password.
+
+There are a few other things I had to do before I could do anything with the code Erin developed.
+1. Convert the .RAW files from the mass spectrometer into mzML files using msConvert
+2. Use SCP to transfer those files to Poseidon (we are putting the files into our /omics/kujawinski/data folder)
+3. Make a CSV file that contains the file names, ion mode, and good data markers. We do this from the sequence file that is created during the sample run on the LCMS and then add columns for 'ionMode' (can be pos or neg) and goodData (where we use 1 to keep data, and 0 to ignore a file).
+4. Put this CSV file into the folder with the mzML files on Poseidon. It will be used to generate a metadata file used in various points of the analysis
+
+## Moving around code - Windows 10 - GitHub - Poseidon (Krista's setup)
+I forked Erin's GitHub repository and then used Git Bash (in a separate window from the bash window I use to access Poseidon) to pull the GitHub repository onto my local desktop computer. On my local computer I use Geany to edit the text files. To get the files back to GitHub, I first had to futz around with setting up an SSH key in GitHub as I had not done that yet. My git skills are poor (and my handy cheat sheet is not available to me at the moment). I settled on using this set of commands to put the files I edit locally back into GitHub:
+```git add -A```
+```git commit -am "Update README.md"```
+```git push```
+
+Then, in the bash window where I have Poseidon open,  I use this command:
+```git pull git pull https://github.com/KujawinskiLaboratory/UntargCode.git```
+
+I am sure there is a better way to set this up so the files end up where I want them, but for now I manually end up moving things into the right folders.
 
 ## Install the conda environment via the yml file:
 ```conda env create --file untargmetab.yml```
 
-This includes R version 3.6 plus XCMS3 and Autotuner, and jupyter notebook for later analyses. If you're not comfortable with conda or conda+R I recommend starting by reading  this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google.
+This includes R version 3.8 plus XCMS3 and Autotuner, and jupyter notebook for later analyses. If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google.
 
 ### Note about activating this conda environment on hpc with slurm:
-- Remember that your sbatch command will create a new compute environment for each array so it doesn't know about your conda init
-- Most scripts I've seen use the 'source activate myenv' command. However, when using this my .Rout file kept randomly throwing this error: "/vortexfs1/home/emcparland/.conda/envs/untargmetab/lib/R/bin/R: line 240: /vortexfs1/home/emcparland/.conda/envs/untargmetab/lib/R/etc/ldpaths: No such file or directory"
-- This seems to be a problem for [others](https://github.com/conda-forge/r-base-feedstock/issues/67)
-- One suggested solution was to use the newer command 'conda activate myenv'. To do this you need to source your conda.sh, you'll see this in the code as:
-
-```CONDA_BASE=$(conda info --base)```
-```source $CONDA_BASE/etc/profile.d/conda.sh```
-```conda activate untargmetab```
-
--However, the script was still throwing the same error randomly when I run larger arrays (though not as many as before?)
-
--One step further, seems like this is an issue of running the array and initializing the environment every time. For some reason the conda activate initializes the path every time and sometimes the path doesn't exist? I don't fully understand this yet but it seems to be an unresolved issue on git. A fix proposed by another git user and that seems to be working for me is to edit the activate-r-base.sh script in the environment:
-
-```nano ~/.conda/envs/untargmetab/etc/conda/activate.d/activate-r-base.sh```
-
-comment out the "R CMD javareconf" line to look like this: 
-
-```#!/usr/bin/env sh```
-
-```#R CMD javareconf > /dev/null 2>&1 || true ```
+Your sbatch command will create a new compute environment for each array so it doesn't know about your conda init. This means the slurm scripts all have this statement in them: ```conda activate untargmetab``` where (Krista thinks) untargmetab is the name established by the untargmetab.yml file above.
 
 ## Step 1: Create metadata
-This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). *Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1).* It will also add an extra column to the metadata with the path of each mzml file that is useful for later.
+This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). *Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1).* It will also add an extra column to the metadata with the path of each mzml file that is useful for later. You may need to edit the string used to match files in the create_metadata.R script. Krista's file names did not have pos/neg in the name, but Erin's did. 
 
 ```sbatch scripts_dir/run-metadata.slurm```
 
 Check how many files you have 
 ```wc -l metadata.txt```
 
-I have 502 and I will use this number in Step 3 to set the total number of array jobs that will be run.
+I (Erin) have 502 and I will use this number in Step 3 to set the total number of array jobs that will be run.
 
-## Step 2: Run Autotuner for XCMS parameter selection
+I (Krista) edited the script so that it spits out a file ("metadata_mismatchissue.csv") if there are no matches found between the list of files provided and the files actually available on Poseidon. 
+
+## Step 2: Run Autotuner for XCMS parameter selection (Krista skipping this for now)
 My peak picking parameters are for marine dissolved organic matter extracted with PPL per the Kuj lab protocol, [Kido Soule et al. 2015](https://doi.org/10.1016/j.marchem.2015.06.029), use the R package[Autotuner](https://doi.org/10.1021/acs.analchem.9b04804) to find parameters appropriate for your sample types. I run Autotuner interactively with a jupyter notebook with the notebook file provided here. 
 
 If you have not used jupyter remotely on an hpc check out the [blog posts by the Alexander lab](https://alexanderlabwhoi.github.io/post/2019-03-08_jpn_slurm/). For first time users, remember to configure jupyter. For reference, I call jupyter on hpc as follows: 
@@ -92,3 +98,6 @@ CAMERA also uses the xcmsSet object which you already made for MetaClean.
 [Chetnik et al. 2020](https://link.springer.com/article/10.1007/s11306-020-01738-3) published MetaClean for a less biased and much faster method to clean up peaks.
 Use the MetaClean.R script to train the classifier and then apply to the full dataset. Before you create the global classifier, you need to create a pdf of EIC's (I classified 2000 for development and 1000 for testing the resulting classifier) as GOOD or BAD peaks. See Chetnik et al. for helpful examples to classify your peaks. After training the classifier then apply to the full dataset.
 
+
+## Some other notes from Erin McParland's version of the README file.
+*A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*

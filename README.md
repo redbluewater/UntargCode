@@ -9,7 +9,7 @@ I (Krista) am working off the code written by Erin McParland and updating the in
 ## How to access Poseidon, WHOI's HPC computing environment
 I used a Git Bash terminal window to log into poseidon. From WHOI's internal Information Systems' website, I learned I needed the following command:
 ```ssh username@poseidon.whoi.edu```
-The password is my WHOI Active Directory password.
+The password is my WHOI Active Directory password. I think I have to be logged into the WHOI VPN for this to work.
 
 ## Other steps needed before I could move forward
 1. Convert the .RAW files from the mass spectrometer into mzML files using msConvert

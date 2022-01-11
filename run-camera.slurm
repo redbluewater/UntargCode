@@ -10,7 +10,7 @@
 #SBATCH --error=camera.error
 
 
-dir="$HOME/untarg_xcms/output_dir/xcms2"
+dir="$HOME/UntargCode/output_dir/xcms2"
 cd "$dir"
 
 work_dir="/output_dir/xcms2"

@@ -11,7 +11,7 @@ I used a Git Bash terminal window to log into poseidon. From WHOI's internal Inf
 ```ssh username@poseidon.whoi.edu```
 The password is my WHOI Active Directory password.
 
-There are a few other things I had to do before I could do anything with the code Erin developed.
+## Other steps needed before I could move forward
 1. Convert the .RAW files from the mass spectrometer into mzML files using msConvert
 2. Use SCP to transfer those files to Poseidon (we are putting the files into our /omics/kujawinski/data folder)
 3. Make a CSV file that contains the file names, ion mode, and good data markers. We do this from the sequence file that is created during the sample run on the LCMS and then add columns for 'ionMode' (can be pos or neg) and goodData (where we use 1 to keep data, and 0 to ignore a file).
@@ -19,22 +19,21 @@ There are a few other things I had to do before I could do anything with the cod
 
 ## Moving around code - Windows 10 - GitHub - Poseidon (Krista's setup)
 I forked Erin's GitHub repository and then used Git Bash (in a separate window from the bash window I use to access Poseidon) to pull the GitHub repository onto my local desktop computer. On my local computer I use Geany to edit the text files. To get the files back to GitHub, I first had to futz around with setting up an SSH key in GitHub as I had not done that yet. My git skills are poor (and my handy cheat sheet is not available to me at the moment). I settled on using this set of commands to put the files I edit locally back into GitHub:
+
 ```git add -A```
+
 ```git commit -am "Update README.md"```
+
 ```git push```
 
 Then, in the bash window where I have Poseidon open,  I use this command:
-```git pull git pull https://github.com/KujawinskiLaboratory/UntargCode.git```
 
-I am sure there is a better way to set this up so the files end up where I want them, but for now I manually end up moving things into the right folders.
+```git pull https://github.com/KujawinskiLaboratory/UntargCode.git```
 
 ## Install the conda environment via the yml file:
 ```conda env create --file untargmetab.yml```
 
-This includes R version 3.8 plus XCMS3 and Autotuner, and jupyter notebook for later analyses. If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google.
-
-### Note about activating this conda environment on hpc with slurm:
-Your sbatch command will create a new compute environment for each array so it doesn't know about your conda init. This means the slurm scripts all have this statement in them: ```conda activate untargmetab``` where (Krista thinks) untargmetab is the name established by the untargmetab.yml file above.
+This includes R version 3.8 plus XCMS3 and Autotuner, and jupyter notebook for later analyses. If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google. You only have to do this once, but since the each sbatch command creates a new compute environment, it doesn't know about your conda init. This means the slurm scripts all have this statement in them: ```conda activate untargmetab``` where (Krista thinks) untargmetab is the name established by the untargmetab.yml file above.
 
 ## Step 1: Create metadata
 This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). *Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1).* It will also add an extra column to the metadata with the path of each mzml file that is useful for later. You may need to edit the string used to match files in the create_metadata.R script. Krista's file names did not have pos/neg in the name, but Erin's did. 

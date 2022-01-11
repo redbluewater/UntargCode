@@ -1,22 +1,34 @@
+##KL working in file from Erin McParland...making notes as I go
+# first issue, files named in different format for SargPatch cfd to Erin's samples
+##KL 1/11/2021
 args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(dplyr))
 
-##will the code make a blank file? Yes. comment that out 11:06
-#file.create("my.csv")
+# #use these rows for troubleshooting locally
+# in_dir="C:/Users/klongnecker/Documents/Current projects/Kujawinski_BIOS-SCOPE/RawData/Lumos/sequence_fromMethods"
+# ionMode <- "pos"
 
-# Read in list of all mz files and specifiy (in sbatch command) the ion Mode
+#this is the version for the HPC and the slurm script
 usePath <- paste0(args[1])
+ionMode<-paste0(args[2])
+
+
+# Read in list of all mz files and specify (in sbatch command) the ion Mode
+usePath <- paste0(in_dir)
 ext <- ".mzML"
 pre <- paste0(usePath,"/")
 
-ionMode<-paste0(args[2])
-
-mzdatafiles <- list.files(usePath,recursive = FALSE, full.names=TRUE, pattern=glob2rx(paste0("*",ionMode,"*",ext)))
+#Erin had this - BUT her file names had pos/neg in the file name, which is redundant from 
+#later processing (though does make file tracking easier)
+#mzdatafiles <- list.files(usePath,recursive = FALSE, full.names=TRUE, pattern=glob2rx(paste0("*",ionMode,"*",ext)))
+mzdatafiles <- list.files(usePath,recursive = FALSE, full.names=TRUE, pattern=glob2rx(paste0("*",ext)))
 
 # Read in list of all csv files from sequence methods and specificy ion Mode
-csvfile <- list.files(usePath, recursive=FALSE, full.name=TRUE, pattern=glob2rx(paste0("*",ionMode,"*",".csv")))
+#csvfile <- list.files(usePath, recursive=FALSE, full.name=TRUE, pattern=glob2rx(paste0("*",ionMode,"*",".csv")))
+csvfile <- list.files(usePath, recursive=FALSE, full.name=TRUE, pattern=glob2rx(paste0("*",".csv")))
 
 # Combine all of your files into one
+#bind_rows will require library(dplyr)
 all_csv<-bind_rows(lapply(csvfile,read.csv,skip=1))
 
 # This is just a blank row generated when exported that I don't need

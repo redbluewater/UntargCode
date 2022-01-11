@@ -16,6 +16,6 @@ in_dir="/vortexfs1/omics/kujawinski/data/SargPatch"
 
 CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh
-conda activate untargmetabR4
+conda activate untargmetab
 
 Rscript --no-save --no-restore --verbose $dir/scripts_dir/create_metadata.R "$in_dir" "neg" > $dir/$SLURM_JOB_NAME.Rout 2>&1 >$dir/$SLURM_JOB_NAME.log

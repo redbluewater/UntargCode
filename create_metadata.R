@@ -25,5 +25,8 @@ all_csv<-all_csv[which(all_csv$ionMode==ionMode & all_csv$goodData==1),]
 # Add a column with the full file basename
 all_csv$FileWithExtension<-paste0(all_csv$File.Name,ext)
 
+#will the code make a blank file?
+file.create("my.csv")
+
 # Check you didn't make any mistakes and then write file
 if(all(all_csv$FileWithExtension %in% basename(mzdatafiles))==TRUE){ write.table(all_csv,paste0("metadata_",ionMode,".txt"),append = FALSE, sep = "\t",row.names = FALSE,col.names=TRUE,quote=FALSE)}

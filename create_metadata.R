@@ -40,5 +40,10 @@ all_csv<-all_csv[which(all_csv$ionMode==ionMode & all_csv$goodData==1),]
 all_csv$FileWithExtension<-paste0(all_csv$File.Name,ext)
 
 # Check you didn't make any mistakes and then write file
-#if(all(all_csv$FileWithExtension %in% basename(mzdatafiles))==TRUE){ write.table(all_csv,paste0("metadata_",ionMode,".txt"),append = FALSE, sep = "\t",row.names = FALSE,col.names=TRUE,quote=FALSE)}
-write.table(all_csv,paste0("metadata_",ionMode,".txt"),append = FALSE, sep = "\t",row.names = FALSE,col.names=TRUE,quote=FALSE)
+#if nothing is found, no file will be created...but code shows success, change that with if/else something
+if(all(all_csv$FileWithExtension %in% basename(mzdatafiles))==TRUE)
+{ write.table(all_csv,paste0("metadata_",ionMode,".txt"),append = FALSE, sep = "\t",row.names = FALSE,col.names=TRUE,quote=FALSE)
+	} else {
+		file.create("metadata_mismatchissue.csv")
+	}
+	

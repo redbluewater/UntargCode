@@ -6,11 +6,13 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem=4gb
 #SBATCH --time=4:00:00
+#SBATCH --output=xcms1_%A-%a.out
+#SBATCH --error=xcms1_%A-%a.error
 
 dir="$HOME/UntargCode"
 cd "$dir"
 
-in_dir="/vortexfs1/omics/kujawinski/data/SargPatch"
+in_dir="/vortexfs1/omics/kujawinski/data/SargPatch/SargPatch_MSn"
 out_dir="$dir/output_dir/$SLURM_JOB_NAME"
 if [ ! -d "$out_dir" ]; then
     mkdir -p "$out_dir"

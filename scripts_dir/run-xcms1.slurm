@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --partition=scavenger
+#SBATCH --partition=compute
 #SBATCH --job-name=xcms1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks=1
 #SBATCH --mem=4gb
-#SBATCH --time=12:00:00
+#SBATCH --time=1:00:00
 #SBATCH --output=xcms1_%A-%a.out
 #SBATCH --error=xcms1_%A-%a.error
 #SBATCH --array=1-502%40

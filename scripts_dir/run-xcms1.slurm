@@ -2,7 +2,7 @@
 #SBATCH --partition=compute
 #SBATCH --job-name=xcms1
 #SBATCH --mail-type=ALL
-###SBATCH --mail-user=klongnecker@whoi.edu
+#SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks=1
 #SBATCH --mem=4gb
 #SBATCH --time=12:00:00

@@ -1,3 +1,4 @@
+#KL note - why is this run using srun and not sbatch? 
 suppressMessages(library(xcms))
 
 setwd("~/UntargCode/output_dir/xcms2")

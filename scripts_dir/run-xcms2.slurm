@@ -4,8 +4,8 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks-per-node=36
-#SBATCH --mem=4gb
-#SBATCH --time=12:00:00
+#SBATCH --mem=170gb
+#SBATCH --time=4:00:00
 #SBATCH --output=xcms2.out
 #SBATCH --error=xcms2.error
 

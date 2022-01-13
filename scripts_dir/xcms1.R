@@ -40,7 +40,8 @@ file <- readMSData(files=paste0(pre,raw_file),pdata = new("NAnnotatedDataFrame",
 
 # Set peak picking parameters
 minWidth=minw; maxWidth=maxw; NOISE=noise; PPM=ppm; PreScan=prescan; PreIntensity=preintensity; SNTHRESH=snthresh;
-cwp <- CentWaveParam(peakwidth = c(minWidth, maxWidth), noise = NOISE, ppm = PPM, mzCenterFun = "wMean", prefilter = c(PreScan,PreIntensity),integrate = 2, mzdiff = -0.005, fitgauss = TRUE, snthresh = SNTHRESH, extendLengthMSW = TRUE, verboseColumns = TRUE)
+#cwp <- CentWaveParam(peakwidth = c(minWidth, maxWidth), noise = NOISE, ppm = PPM, mzCenterFun = "wMean", prefilter = c(PreScan,PreIntensity),integrate = 2, mzdiff = -0.005, fitgauss = TRUE, snthresh = SNTHRESH, extendLengthMSW = TRUE, verboseColumns = TRUE)
+cwp <- CentWaveParam(peakwidth = c(minWidth, maxWidth), noise = NOISE, ppm = PPM, mzCenterFun = "wMean", prefilter = c(PreScan,PreIntensity),integrate = 2, mzdiff = -0.005, fitgauss = TRUE, snthresh = SNTHRESH, verboseColumns = TRUE)
 
 # Perform peak picking on file
 xs <- findChromPeaks(file, param = cwp)

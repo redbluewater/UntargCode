@@ -8,7 +8,6 @@
 #SBATCH --time=4:00:00
 #SBATCH --output=xcms1_%A-%a.out
 #SBATCH --error=xcms1_%A-%a.error
-#SBATCH --array=1-5%5 
 
 #this is the numbers for Erin's 502 files do 1 to 502 files in batches of 40. If I use this, update to match what I have
 ###SBATCH --array=1-502%40 

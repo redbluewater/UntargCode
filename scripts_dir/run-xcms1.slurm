@@ -9,6 +9,9 @@
 #SBATCH --output=xcms1_%A-%a.out
 #SBATCH --error=xcms1_%A-%a.error
 
+#this is the numbers for Erin's 502 files do 1 to 502 files in batches of 40. If I use this, update to match what I have
+###SBATCH --array=1-502%40 
+
 dir="$HOME/UntargCode"
 cd "$dir"
 

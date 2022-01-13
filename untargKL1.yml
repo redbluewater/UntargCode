@@ -33,7 +33,7 @@ dependencies:
   - bioconductor-rhdf5lib=1.8.0=r36h516909a_0
   - bioconductor-s4vectors=0.24.0=r36h516909a_0
   - bioconductor-vsn=3.54.0=r36h516909a_0
-  - bioconductor-xcms-3.12.0-r40h5f743cb_0
+  - bioconductor-xcms=3.8.0=r36he1b5a44_0
   - bioconductor-zlibbioc=1.32.0=r36h516909a_0
   - bleach=3.1.0=py37_0
   - boto3=1.12.19=pyh8c360ce_0

@@ -24,6 +24,6 @@ echo This is job $SLURM_JOB_ID
 
 CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh
-conda activate untargmetab
+conda activate untargKL2
 
 Rscript --no-save --no-restore --verbose $dir/scripts_dir/xcms2.R "$in_dir" "$out_dir" "pos" > "$out_dir/${SLURM_JOB_NAME}_pos.Rout" 2>&1 >$out_dir/${SLURM_JOB_NAME}_pos.log

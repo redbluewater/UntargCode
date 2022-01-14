@@ -1,4 +1,4 @@
-name: r_4.0.5
+name: untargKL2
 channels:
   - conda-forge
   - bioconda
@@ -115,4 +115,4 @@ dependencies:
     - netcdf4==1.5.8
     - numpy==1.22.0
     - setuptools==60.5.0
-prefix: /vortexfs1/home/klongnecker/.conda/envs/r_4.0.5
+prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL2

@@ -20,10 +20,10 @@ getxcmsSetObject <- function(xobject) {
     if (class(xobject) == "XCMSnExp") {
         # Get the legacy xcmsSet object
         suppressWarnings(xset <- as(xobject, 'xcmsSet'))
-        if (is.null(xset@phenoData$sample_group))
+        if (is.null(xset@phenoData$subset.name))
             sampclass(xset) = "."
         else
-            sampclass(xset) <- xset@phenoData$sample_group
+            sampclass(xset) <- xset@phenoData$subset.name
         return (xset)
     }
 }

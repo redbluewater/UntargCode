@@ -20,7 +20,7 @@ getxcmsSetObject <- function(xobject) {
     if (class(xobject) == "XCMSnExp") {
         # Get the legacy xcmsSet object
         suppressWarnings(xset <- as(xobject, 'xcmsSet'))
-        if (is.null(xset@phenoData$subset.name))
+        if (is.null(xset@phenoData$subset.name)) #KL change, Erin had xset@phenoData$sample_group ...which doesn't exist
             sampclass(xset) = "."
         else
             sampclass(xset) <- xset@phenoData$subset.name
@@ -29,7 +29,9 @@ getxcmsSetObject <- function(xobject) {
 }
 
 # Create the xcmsSet object
-xset <- getxcmsSetObject(processedData)
+#xset <- getxcmsSetObject(processedData) ? this will complain about MS2 data, not sure how Erin got it to work
+xset <- as(filterMsLevel(processedData, msLevel = 1L), "xcmsSet") #from KL code
+
 # Use fill peaks 
 xset <- fillPeaks(xset, method = "chrom")
 dim(xset@groups)

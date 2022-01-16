@@ -24,7 +24,7 @@ Once you are logged into Poseidon, activate the conda module with ```module load
 I forked Erin's GitHub repository and then used Git Bash (in a separate window from the bash window I use to access Poseidon) to pull the GitHub repository onto my local desktop computer. On my local computer I use Geany to edit the text files. To get the files back to GitHub, I first had to futz around with setting up an SSH key in GitHub as I had not done that yet. My git skills are poor (and my handy cheat sheet is not available to me at the moment). I settled on using this set of commands to put the files I edit locally back into GitHub:
 
 ```git add -A```\
-```git commit -am "Update README.md"```
+```git commit -am "Update README.md"```\
 ```git push```\
 
 Then, in the bash window where I have Poseidon open,  I use this command:
@@ -33,18 +33,10 @@ Then, in the bash window where I have Poseidon open,  I use this command:
 
 Remember that if I edit the README.md file here in GitHub (online), I need to do a local ```git pull``` before I can push any edits back to GitHub. I suspect there is a way around this with a more specific git command, but I haven't bothered to look into that too much.
 
-## Install the conda environment via the yml file:
-```conda env create --file untargmetab.yml```
-
-This includes R version 3.8 plus XCMS3 and Autotuner, and jupyter notebook for later analyses. If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google. Remember that each sbatch command creates a new compute environment, so all the slurm scripts all have this statement in them: ```conda activate untargmetab``` where (Krista thinks) untargmetab is the name established by the untargmetab.yml file above. Also remember that you have activate conda (see above in the step about accessing Poseidon).
-
-Later I learned that I needed R version 3.12 (or so). This required updating the YML file and that was a process. To do this, you need to set up a conda environment and install all the packages in that environment and export the yml file to use in the future. Here's the steps that worked (after logging into Poseidon)
+## Create the conda environment you will need
+You use conda to gather all the pieces you need: R and its various packages. For example, I needed R version 3.12 (or so) which required updating Erin's YML file. This is quite a process (read, hassle). To do this, you need to set up a conda environment, install all the packages in that environment, and export the yml file to use in the future. Here's the steps that worked (after logging into Poseidon):\
 ```module load anaconda/5.1```\
-
-You only have to create the environment once, anytime you want it in the future, just activate it:
-```conda activate untargmetab```
-
-```conda config --add channels conda-forge``` (You cannot get R>3.6 from anaconda)\
+```conda config --add channels conda-forge``` (you cannot get R>3.6 from anaconda)\
 ```conda config --set channel_priority strict``` (may not be necessary)\
 ```conda search r-base``` (find the packages)\
 ```conda create -n r_4.0.5``` (make the environment first, otherwise this hangs forever)\
@@ -59,7 +51,16 @@ You only have to create the environment once, anytime you want it in the future,
 
 At this point you have your configuration file, edit it locally to change the environment to be untargKL3.yml --> do this by setting the first row to ```name: untargKL3.yml``` and at the very end of the file, edit this ```prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL3```. Then, go into the various slurm scripts which follow and change them all to read ```conda activate untargKL3```
 
-## Step 1: Create metadata
+## Step 1: Install the conda environment via the yml file:
+```conda env create --file untargKL3.yml```
+
+You only have to create the environment once, anytime you want it in the future, just activate it:
+```conda activate untargKL3```
+
+Remember that each sbatch command creates a new compute environment, so all the slurm scripts all have this statement in them: ```conda activate untargKL3``` where untargKL3 is the name established by the untargmetab.yml file above. Also remember that you have activate the module with conda before doing anything (see above in the step about accessing Poseidon, repeating here because I keep forgetting).
+
+
+## Step 2: Create metadata
 This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). *Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1).* It will also add an extra column to the metadata with the path of each mzml file that is useful for later. You may need to edit the string used to match files in the create_metadata.R script. Krista's file names did not have pos/neg in the name, but Erin's did. 
 
 ```sbatch scripts_dir/run-metadata.slurm```
@@ -71,16 +72,7 @@ I (Erin) have 502 and I will use this number in Step 3 to set the total number o
 
 I (Krista) edited the script so that it spits out a file ("metadata_mismatchissue.csv") if there are no matches found between the list of files provided and the files actually available on Poseidon. 
 
-## Step 2: Run Autotuner for XCMS parameter selection (Krista skipping this for now)
-My peak picking parameters are for marine dissolved organic matter extracted with PPL per the Kuj lab protocol, [Kido Soule et al. 2015](https://doi.org/10.1016/j.marchem.2015.06.029), use the R package[Autotuner](https://doi.org/10.1021/acs.analchem.9b04804) to find parameters appropriate for your sample types. I run Autotuner interactively with a jupyter notebook with the notebook file provided here. 
 
-If you have not used jupyter remotely on an hpc check out the [blog posts by the Alexander lab](https://alexanderlabwhoi.github.io/post/2019-03-08_jpn_slurm/). For first time users, remember to configure jupyter. For reference, I call jupyter on hpc as follows: 
-
-```jupyter notebook --no-browser --port=9000 --ip=0.0.0.0```
-
-Make sure I know the login number and node and then create an ssh tunnel on my local computer with: ```ssh -N -f -L port:node:port username@hpc```
-
-Type into local browser: ```localhost:9000``` and voila!
 
 ## Step 3: peak picking and peak shape evaluation
 Run the peak picking and peak shape on each file individually with an array job. This step is an 'embarassingly parallel' computation so I use a job array to quickly process hundreds of files. I run 40 jobs at a time and each jobs takes about 20 minutes each. I filter the peaks based on RMSE < 0.125 Then use peak cleaning functions to remove wide peaks (<40 s) and merge neighboring peaks. For 500 files, I am done with Step 3 in ~3 hours :clap: :grin: :clap:
@@ -101,21 +93,19 @@ Note: For reference, when I was testing this code with ~100 samples, I could run
 
 ```sbatch scripts_dir/run-xcms2.slurm```
 
-## Step 6: Create an xset object (Krista seeing what happens if I stick this into the next slurm script)
+## Step 6: Create an xset object 
+(?Krista seeing what happens if I stick this into the next slurm script)
 Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I had to use bigmem to make fillPeaks run. Make sure you edit the polarity mode.
 
-```srun -p bigmem --time=04:00:00 --ntasks-per-node=1 --mem=500gb --pty bash```
-
-```conda activate untargmetabR4```
-
-```R```
-
+```srun -p bigmem --time=04:00:00 --ntasks-per-node=1 --mem=500gb --pty bash```\
+```conda activate untargKL3```\
+```R```\
 ```source("create_xset.R")```
 
 ## Step 7: Use CAMERA to create pseudospectra.
 CAMERA also uses the xcmsSet object which you already made for MetaClean.
 
-```sbatch scripts_dir/run-camera.slurm```
+```sbatch scripts_dir/run-camera.slurm```\
 
 ## Step 8: Use MetaClean for peak checking
 Note to self: this is not installed yet
@@ -129,4 +119,16 @@ Use the MetaClean.R script to train the classifier and then apply to the full da
 ```squeue -u klongnecker```]
 
 ## Some other notes from Erin McParland's version of the README file.
-*A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*
+*A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*\
+If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google.
+
+## Run Autotuner for XCMS parameter selection (Krista skipping this for now)
+My peak picking parameters are for marine dissolved organic matter extracted with PPL per the Kuj lab protocol, [Kido Soule et al. 2015](https://doi.org/10.1016/j.marchem.2015.06.029), use the R package[Autotuner](https://doi.org/10.1021/acs.analchem.9b04804) to find parameters appropriate for your sample types. I run Autotuner interactively with a jupyter notebook with the notebook file provided here. 
+
+If you have not used jupyter remotely on an hpc check out the [blog posts by the Alexander lab](https://alexanderlabwhoi.github.io/post/2019-03-08_jpn_slurm/). For first time users, remember to configure jupyter. For reference, I call jupyter on hpc as follows: 
+
+```jupyter notebook --no-browser --port=9000 --ip=0.0.0.0```
+
+Make sure I know the login number and node and then create an ssh tunnel on my local computer with: ```ssh -N -f -L port:node:port username@hpc```
+
+Type into local browser: ```localhost:9000``` and voila!

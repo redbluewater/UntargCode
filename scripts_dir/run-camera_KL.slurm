@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --partition=compute
+#SBATCH --partition=bigmem
 #SBATCH --job-name=camera
-#SBATCH --mail-type=ALL
+#SBATCH --mail-type=FAIL,END
 #SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks-per-node=12
 #SBATCH --mem=20gb

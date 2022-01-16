@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --partition=compute
+#SBATCH --partition=bigmem
 #SBATCH --job-name=xcms2
-#SBATCH --mail-type=NONE
+#SBATCH --mail-type=FAIL,END
 #SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks-per-node=36
-#SBATCH --mem=170gb
-#SBATCH --time=4:00:00
+#SBATCH --mem=500gb
+#SBATCH --time=6:00:00
 #SBATCH --output=xcms2.out
 #SBATCH --error=xcms2.error
 

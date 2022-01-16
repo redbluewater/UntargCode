@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=compute
 #SBATCH --job-name=meta
-#SBATCH --mail-type=NONE
+#SBATCH --mail-type=FAIL,END
 #SBATCH --mail-user=klongnecker@whoi.edu 
 #SBATCH --ntasks=1
 #SBATCH --mem=4000

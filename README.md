@@ -6,6 +6,12 @@ I (Krista) am working off the code written by Erin McParland and updating the in
 
 **You should edit the parameter in the R scripts to values appropriate for your experimental system.**
 
+## Some steps before getting into the R/XCMS work
+1. Convert the .RAW files from the mass spectrometer into mzML files using msConvert
+2. Use SCP to transfer those files to Poseidon (we are putting the files into our /omics/kujawinski/data folder)
+3. Make a CSV file that contains the file names, ion mode, and good data markers. We do this from the sequence file that is created during the sample run on the LCMS and then add columns for 'ionMode' (can be pos or neg) and goodData (where we use 1 to keep data, and 0 to ignore a file).
+4. Put this CSV file into the folder with the mzML files on Poseidon (again with SCP). It will be used to generate a metadata file used in various points of the analysis.
+
 ## How to access Poseidon, WHOI's HPC computing environment
 I used a Git Bash terminal window to log into poseidon. From WHOI's internal Information Systems' website, I learned I needed the following command:
 ```ssh username@poseidon.whoi.edu```
@@ -13,11 +19,6 @@ The password is my WHOI Active Directory password. I think I have to be logged i
 
 Once you are logged into Poseidon, activate the conda module with ```module load anaconda/5.1```
 
-## Other steps needed before I could move forward
-1. Convert the .RAW files from the mass spectrometer into mzML files using msConvert
-2. Use SCP to transfer those files to Poseidon (we are putting the files into our /omics/kujawinski/data folder)
-3. Make a CSV file that contains the file names, ion mode, and good data markers. We do this from the sequence file that is created during the sample run on the LCMS and then add columns for 'ionMode' (can be pos or neg) and goodData (where we use 1 to keep data, and 0 to ignore a file).
-4. Put this CSV file into the folder with the mzML files on Poseidon. It will be used to generate a metadata file used in various points of the analysis
 
 ## Moving around code - Windows 10 - GitHub - Poseidon (Krista's setup)
 I forked Erin's GitHub repository and then used Git Bash (in a separate window from the bash window I use to access Poseidon) to pull the GitHub repository onto my local desktop computer. On my local computer I use Geany to edit the text files. To get the files back to GitHub, I first had to futz around with setting up an SSH key in GitHub as I had not done that yet. My git skills are poor (and my handy cheat sheet is not available to me at the moment). I settled on using this set of commands to put the files I edit locally back into GitHub:
@@ -35,7 +36,36 @@ Then, in the bash window where I have Poseidon open,  I use this command:
 ## Install the conda environment via the yml file:
 ```conda env create --file untargmetab.yml```
 
-This includes R version 3.8 plus XCMS3 and Autotuner, and jupyter notebook for later analyses. If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google. Remember that each sbatch command creates a new compute environment, so all the slurm scripts all have this statement in them: ```conda activate untargmetab``` where (Krista thinks) untargmetab is the name established by the untargmetab.yml file above. Also remember that you have active conda (see above in the step about accessing Poseidon).
+This includes R version 3.8 plus XCMS3 and Autotuner, and jupyter notebook for later analyses. If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google. Remember that each sbatch command creates a new compute environment, so all the slurm scripts all have this statement in them: ```conda activate untargmetab``` where (Krista thinks) untargmetab is the name established by the untargmetab.yml file above. Also remember that you have activate conda (see above in the step about accessing Poseidon).
+
+Later I learned that I needed R version 3.12 (or so). This required updating the YML file and that was a process. To do this, you need to set up a conda environment and install all the packages in that environment and export the yml file to use in the future. Here's the steps that worked (after logging into Poseidon)
+```module load anaconda/5.1```
+
+
+You only have to create the environment once, anytime you want it in the future, just activate it:
+```conda activate untargmetab```
+
+```conda config --add channels conda-forge``` (You cannot get R>3.6 from anaconda)
+
+```conda config --set channel_priority strict``` (may not be necessary)
+
+```conda search r-base``` (find the packages)
+
+```conda create -n r_4.0.5``` (make the environment first, otherwise this hangs forever)
+
+```conda activate r_4.0.5``` (activate it, nothing there yet)
+
+```conda install -c conda-forge r-base=4.0.5```
+
+```conda install r-essentials``` (that syntax is from memory)
+
+```conda config --set restore_free_channel true``` (need to search older channels that are off by default to get xcms to load)
+
+```conda install bioconductor-xcms=3.12.0``` (somehow I also have CAMERA?)
+
+```conda env export > untargKL3.yml``` 
+
+At this point you have your configuration file, edit it locally to change the environment to be untargKL3.yml --> do this by setting the first row to ```name: untargKL3.yml``` and at the very end of the file, edit this ```prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL3```. Then, go into the various slurm scripts which follow and change them all to read ```conda activate untargKL3```
 
 ## Step 1: Create metadata
 This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). *Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1).* It will also add an extra column to the metadata with the path of each mzml file that is useful for later. You may need to edit the string used to match files in the create_metadata.R script. Krista's file names did not have pos/neg in the name, but Erin's did. 
@@ -96,9 +126,15 @@ CAMERA also uses the xcmsSet object which you already made for MetaClean.
 ```sbatch scripts_dir/run-camera.slurm```
 
 ## Step 8: Use MetaClean for peak checking
+Note to self: this is not installed yet
+
 [Chetnik et al. 2020](https://link.springer.com/article/10.1007/s11306-020-01738-3) published MetaClean for a less biased and much faster method to clean up peaks.
 Use the MetaClean.R script to train the classifier and then apply to the full dataset. Before you create the global classifier, you need to create a pdf of EIC's (I classified 2000 for development and 1000 for testing the resulting classifier) as GOOD or BAD peaks. See Chetnik et al. for helpful examples to classify your peaks. After training the classifier then apply to the full dataset.
 
+## Misc. handy functions I seem to use over and over
+```conda info --envs```
+```conda search r-base```
+```squeue -u klongnecker```
 
 ## Some other notes from Erin McParland's version of the README file.
 *A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*

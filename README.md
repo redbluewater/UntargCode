@@ -23,15 +23,15 @@ Once you are logged into Poseidon, activate the conda module with ```module load
 ## Moving around code - Windows 10 - GitHub - Poseidon (Krista's setup)
 I forked Erin's GitHub repository and then used Git Bash (in a separate window from the bash window I use to access Poseidon) to pull the GitHub repository onto my local desktop computer. On my local computer I use Geany to edit the text files. To get the files back to GitHub, I first had to futz around with setting up an SSH key in GitHub as I had not done that yet. My git skills are poor (and my handy cheat sheet is not available to me at the moment). I settled on using this set of commands to put the files I edit locally back into GitHub:
 
-```git add -A```
-
+```git add -A```\
 ```git commit -am "Update README.md"```
-
-```git push```
+```git push```\
 
 Then, in the bash window where I have Poseidon open,  I use this command:
 
 ```git pull https://github.com/KujawinskiLaboratory/UntargCode.git```
+
+Remember that if I edit the README.md file here in GitHub (online), I need to do a local ```git pull``` before I can push any edits back to GitHub. I suspect there is a way around this with a more specific git command, but I haven't bothered to look into that too much.
 
 ## Install the conda environment via the yml file:
 ```conda env create --file untargmetab.yml```
@@ -39,31 +39,23 @@ Then, in the bash window where I have Poseidon open,  I use this command:
 This includes R version 3.8 plus XCMS3 and Autotuner, and jupyter notebook for later analyses. If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google. Remember that each sbatch command creates a new compute environment, so all the slurm scripts all have this statement in them: ```conda activate untargmetab``` where (Krista thinks) untargmetab is the name established by the untargmetab.yml file above. Also remember that you have activate conda (see above in the step about accessing Poseidon).
 
 Later I learned that I needed R version 3.12 (or so). This required updating the YML file and that was a process. To do this, you need to set up a conda environment and install all the packages in that environment and export the yml file to use in the future. Here's the steps that worked (after logging into Poseidon)
-```module load anaconda/5.1```
-
+```module load anaconda/5.1```\
 
 You only have to create the environment once, anytime you want it in the future, just activate it:
 ```conda activate untargmetab```
 
-```conda config --add channels conda-forge``` (You cannot get R>3.6 from anaconda)
-
-```conda config --set channel_priority strict``` (may not be necessary)
-
-```conda search r-base``` (find the packages)
-
-```conda create -n r_4.0.5``` (make the environment first, otherwise this hangs forever)
-
-```conda activate r_4.0.5``` (activate it, nothing there yet)
-
-```conda install -c conda-forge r-base=4.0.5```
-
-```conda install r-essentials``` (that syntax is from memory)
-
-```conda config --set restore_free_channel true``` (need to search older channels that are off by default to get xcms to load)
-
-```conda install bioconductor-xcms=3.12.0``` (somehow I also have CAMERA?)
-
-```conda env export > untargKL3.yml``` 
+```conda config --add channels conda-forge``` (You cannot get R>3.6 from anaconda)\
+```conda config --set channel_priority strict``` (may not be necessary)\
+```conda search r-base``` (find the packages)\
+```conda create -n r_4.0.5``` (make the environment first, otherwise this hangs forever)\
+```conda activate r_4.0.5``` (activate it, nothing there yet)\
+```conda install -c conda-forge r-base=4.0.5```\
+```conda install r-essentials``` (that syntax is from memory)\
+```conda config --set restore_free_channel true``` (need to search older channels that are off by default to get xcms to load)\
+```conda install bioconductor-xcms=3.12.0``` \
+```conda install r-gtools```\
+```conda install bioconductor-camera=1.46.0```
+```conda env export > untargKL3.yml``` \
 
 At this point you have your configuration file, edit it locally to change the environment to be untargKL3.yml --> do this by setting the first row to ```name: untargKL3.yml``` and at the very end of the file, edit this ```prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL3```. Then, go into the various slurm scripts which follow and change them all to read ```conda activate untargKL3```
 
@@ -109,7 +101,7 @@ Note: For reference, when I was testing this code with ~100 samples, I could run
 
 ```sbatch scripts_dir/run-xcms2.slurm```
 
-## Step 6: Create an xset object
+## Step 6: Create an xset object (Krista seeing what happens if I stick this into the next slurm script)
 Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I had to use bigmem to make fillPeaks run. Make sure you edit the polarity mode.
 
 ```srun -p bigmem --time=04:00:00 --ntasks-per-node=1 --mem=500gb --pty bash```
@@ -132,9 +124,9 @@ Note to self: this is not installed yet
 Use the MetaClean.R script to train the classifier and then apply to the full dataset. Before you create the global classifier, you need to create a pdf of EIC's (I classified 2000 for development and 1000 for testing the resulting classifier) as GOOD or BAD peaks. See Chetnik et al. for helpful examples to classify your peaks. After training the classifier then apply to the full dataset.
 
 ## Misc. handy functions I seem to use over and over
-```conda info --envs```
-```conda search r-base```
-```squeue -u klongnecker```
+```conda info --envs```\
+```conda search r-base```\
+```squeue -u klongnecker```]
 
 ## Some other notes from Erin McParland's version of the README file.
 *A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*

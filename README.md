@@ -24,11 +24,11 @@ Once you are logged into Poseidon, activate the conda module with ```module load
 I forked Erin's GitHub repository and then used Git Bash (in a separate window from the bash window I use to access Poseidon) to pull the GitHub repository onto my local desktop computer. On my local computer I use Geany to edit the text files. To get the files back to GitHub, I first had to futz around with setting up an SSH key in GitHub as I had not done that yet. My git skills are poor (and my handy cheat sheet is not available to me at the moment). I settled on using this set of commands to put the files I edit locally back into GitHub:
 
 ```git add -A```\
-```git commit -am "Update README.md"```\
+```git commit -am "Brief description goes here"``` (can use the bit in quotes to describe the update)\
 ```git push```\
 (enter the passcode I use to get files to git)\
-Then, in the bash window where I have Poseidon open,  I use this command:
 
+Then, in the bash window where I have Poseidon open,  I use this command:\
 ```git pull https://github.com/KujawinskiLaboratory/UntargCode.git```
 
 Remember that if I edit the README.md file here in GitHub (online), I need to do a local ```git pull``` before I can push any edits back to GitHub. I suspect there is a way around this with a more specific git command, but I haven't bothered to look into that too much.

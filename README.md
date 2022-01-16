@@ -26,7 +26,7 @@ I forked Erin's GitHub repository and then used Git Bash (in a separate window f
 ```git add -A```\
 ```git commit -am "Update README.md"```\
 ```git push```\
-
+(enter the passcode I use to get files to git)\
 Then, in the bash window where I have Poseidon open,  I use this command:
 
 ```git pull https://github.com/KujawinskiLaboratory/UntargCode.git```
@@ -93,36 +93,30 @@ Note: For reference, when I was testing this code with ~100 samples, I could run
 
 ```sbatch scripts_dir/run-xcms2.slurm```
 
-## Step 6: Create an xset object 
-(?Krista seeing what happens if I stick this into the next slurm script)
-Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I had to use bigmem to make fillPeaks run. Make sure you edit the polarity mode.
+## Step 6: Create an xset object and use CAMERA to create pseudospectra
+Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I (Erin) had to use bigmem to make fillPeaks run. 
 
-```srun -p bigmem --time=04:00:00 --ntasks-per-node=1 --mem=500gb --pty bash```\
-```conda activate untargKL3```\
-```R```\
-```source("create_xset.R")```
+At this point I (Krista) only have one ion mode of data. Erin's code for CAMERA code assumes that both ion modes have been processed because there is a comparison step. 
 
-## Step 7: Use CAMERA to create pseudospectra.
-CAMERA also uses the xcmsSet object which you already made for MetaClean.
-
-```sbatch scripts_dir/run-camera.slurm```\
-
-## Step 8: Use MetaClean for peak checking
-Note to self: this is not installed yet
-
-[Chetnik et al. 2020](https://link.springer.com/article/10.1007/s11306-020-01738-3) published MetaClean for a less biased and much faster method to clean up peaks.
-Use the MetaClean.R script to train the classifier and then apply to the full dataset. Before you create the global classifier, you need to create a pdf of EIC's (I classified 2000 for development and 1000 for testing the resulting classifier) as GOOD or BAD peaks. See Chetnik et al. for helpful examples to classify your peaks. After training the classifier then apply to the full dataset.
+```sbatch scripts_dir/run-camera_KL.slurm```\
 
 ## Misc. handy functions I seem to use over and over
 ```conda info --envs```\
 ```conda search r-base```\
 ```squeue -u klongnecker```]
 
-## Some other notes from Erin McParland's version of the README file.
+This will let you open up an R window for testing on Poseidon (useful for testing)\
+```srun -p compute --time=01:00:00 --ntasks-per-node=1 --mem=10gb --pty bash```\
+```conda activate untargKL3```\
+```R```\
+```source("create_xset.R")``` (for example - could run this script)
+
+
+# Bits from Erin's readme file, leave here for now
 *A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*\
 If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google.
 
-## Run Autotuner for XCMS parameter selection (Krista skipping this for now)
+## Run Autotuner for XCMS parameter selection
 My peak picking parameters are for marine dissolved organic matter extracted with PPL per the Kuj lab protocol, [Kido Soule et al. 2015](https://doi.org/10.1016/j.marchem.2015.06.029), use the R package[Autotuner](https://doi.org/10.1021/acs.analchem.9b04804) to find parameters appropriate for your sample types. I run Autotuner interactively with a jupyter notebook with the notebook file provided here. 
 
 If you have not used jupyter remotely on an hpc check out the [blog posts by the Alexander lab](https://alexanderlabwhoi.github.io/post/2019-03-08_jpn_slurm/). For first time users, remember to configure jupyter. For reference, I call jupyter on hpc as follows: 
@@ -132,3 +126,9 @@ If you have not used jupyter remotely on an hpc check out the [blog posts by the
 Make sure I know the login number and node and then create an ssh tunnel on my local computer with: ```ssh -N -f -L port:node:port username@hpc```
 
 Type into local browser: ```localhost:9000``` and voila!
+
+## Use MetaClean for peak checking
+[Chetnik et al. 2020](https://link.springer.com/article/10.1007/s11306-020-01738-3) published MetaClean for a less biased and much faster method to clean up peaks.
+Use the MetaClean.R script to train the classifier and then apply to the full dataset. Before you create the global classifier, you need to create a pdf of EIC's (I classified 2000 for development and 1000 for testing the resulting classifier) as GOOD or BAD peaks. See Chetnik et al. for helpful examples to classify your peaks. After training the classifier then apply to the full dataset.
+
+

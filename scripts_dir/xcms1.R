@@ -54,14 +54,12 @@ xs.filt <- xs
 chromPeaks(xs.filt) <- peakmat.new
 xs.filt@.processHistory <- xs@.processHistory
 
-#comment this out - I have no idea how Erin did this, but refineChromPeaks is from a later verison of XCMS
-## Perform peak cleaning
-## Remove wide peaks
-#xset_clean <- refineChromPeaks(xs.filt, param=CleanPeaksParam(maxPeakwidth=40))
-## Combine peaks
-#mpp <- MergeNeighboringPeaksParam(expandRt = 4,expandMz = 0,ppm = 10,minProp = 0.75)
-#xset <- refineChromPeaks(xset_clean, param = mpp)
-xset <- xs
+# Perform peak cleaning
+# Remove wide peaks
+xset_clean <- refineChromPeaks(xs.filt, param=CleanPeaksParam(maxPeakwidth=40))
+# Combine peaks
+mpp <- MergeNeighboringPeaksParam(expandRt = 4,expandMz = 0,ppm = 10,minProp = 0.75)
+xset <- refineChromPeaks(xset_clean, param = mpp)
 
 # Save peak picked and filtered object
 saveRDS(xset, file = paste0(output_dir,"/xcms1-",ionMode,"-", f, ".rds"))

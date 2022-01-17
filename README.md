@@ -96,8 +96,7 @@ Note: For reference, when I was testing this code with ~100 samples, I could run
 ## Step 6: Create an xset object and use CAMERA to create pseudospectra
 Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I (Erin) had to use bigmem to make fillPeaks run. 
 
-At this point I (Krista) only have one ion mode of data. Erin's code for CAMERA code assumes that both ion modes have been processed because there is a comparison step. 
-
+```sbatch scripts_dir/run-create_xset.slurm```\
 ```sbatch scripts_dir/run-camera_KL.slurm```
 
 ## Misc. handy functions I seem to use over and over

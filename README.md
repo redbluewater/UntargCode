@@ -66,7 +66,7 @@ This is a quick R script to create a tab-delimited metadata file of all the sequ
 ```sbatch scripts_dir/run-metadata.slurm```
 
 Check how many files you have 
-```wc -l metadata.txt```
+```wc -l metadata_{neg/pos}.txt```
 
 I (Erin) have 502 and I will use this number in Step 3 to set the total number of array jobs that will be run.
 

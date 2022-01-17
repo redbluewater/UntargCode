@@ -4,7 +4,7 @@ suppressMessages(library(xcms))
 setwd("~/UntargCode/output_dir/xcms2")
 
 # polarity mode
-mode <- "pos"
+mode <- "neg"
 
 # Load the MS OnDisk object combined in previous script
 load(file=paste0("xcms2_final-",mode,".RData"))

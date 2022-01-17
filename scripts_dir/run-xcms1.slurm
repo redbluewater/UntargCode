@@ -6,12 +6,13 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem=4gb
 #SBATCH --time=6:00:00
-#SBATCH --output=xcms1_%A-%a.out
-#SBATCH --error=xcms1_%A-%a.error
+#SBATCH --output=xcms1.out
+#SBATCH --error=xcms1.error
 #SBATCH --array=1-68%40 
 
 #this is the numbers for Erin's 502 files do 1 to 502 files in batches of 40. If I use this, update to match what I have
 ###SBATCH --array=1-502%40 
+#change output to just be xcms1.out and xcms1.error - I am not sure why I would want all the individual files
 
 dir="$HOME/UntargCode"
 cd "$dir"

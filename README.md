@@ -93,11 +93,14 @@ Note: For reference, when I was testing this code with ~100 samples, I could run
 
 ```sbatch scripts_dir/run-xcms2.slurm```
 
-## Step 6: Create an xset object and use CAMERA to create pseudospectra
-Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I (Erin) had to use bigmem to make fillPeaks run. 
+## Step 6: Create an xset object Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I (Erin) had to use bigmem to make fillPeaks run. 
 
 ```sbatch scripts_dir/run-create_xset.slurm```\
-```sbatch scripts_dir/run-camera_KL.slurm```
+
+Now go back and repeat steps #1 through 6 for the other ion mode.
+## Step 7: Use CAMERA to create pseudospectra
+Once you have both ion modes done, you are ready to run the script for CAMERA.
+```sbatch scripts_dir/run-camera.slurm```
 
 ## Misc. handy functions I seem to use over and over
 ```conda info --envs```\

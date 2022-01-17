@@ -34,7 +34,7 @@ Then, in the bash window where I have Poseidon open,  I use this command:\
 Remember that if I edit the README.md file here in GitHub (online), I need to do a local ```git pull``` before I can push any edits back to GitHub. I suspect there is a way around this with a more specific git command, but I haven't bothered to look into that too much.
 
 ## Create the conda environment you will need
-You use conda to gather all the pieces you need: R and its various packages. For example, I needed R version 3.12 (or so) which required updating Erin's YML file. This is quite a process (read, hassle). To do this, you need to set up a conda environment, install all the packages in that environment, and export the yml file to use in the future. Here's the steps that worked (after logging into Poseidon):\
+You use conda to gather all the pieces you need: R and its various packages. For example, I needed R version 3.12 (or so) which required updating Erin's YML file. This is quite a process (read, hassle). To do this, you need to set up a conda environment, install all the packages in that environment, and export the yml file to use in the future. Erin's text file (create_untargmetab_conda_poseidon.txt detailed what she did). Here's the steps that worked for me (after logging into Poseidon):\
 ```module load anaconda/5.1```\
 ```conda config --add channels conda-forge``` (you cannot get R>3.6 from anaconda)\
 ```conda config --set channel_priority strict``` (may not be necessary)\

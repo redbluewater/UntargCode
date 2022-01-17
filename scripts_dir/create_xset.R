@@ -1,7 +1,8 @@
 suppressMessages(library(xcms))
 
 #setwd("~/UntargCode/output_dir/xcms2") #KL change
-setwd(paste0(args[1]))
+input_dir <- paste0(args[1])
+setwd(input_dir)
 
 # polarity mode #KL change
 #mode <- "pos"

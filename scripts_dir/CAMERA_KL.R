@@ -3,10 +3,13 @@
 suppressMessages(library(xcms))
 suppressMessages(library(CAMERA))
 
-setwd("~/UntargCode/output_dir/xcms2")
+#setwd("~/UntargCode/output_dir/xcms2") #KL change
+setwd(paste0(args[1]))
 
-# polarity mode
-mode <- "pos"
+# polarity mode #KL change
+#mode <- "pos"
+mode <- paste0(args[2])
+
 
 # Load the MS OnDisk object combined in previous script
 load(file=paste0("xcms2_final-",mode,".RData"))
@@ -42,9 +45,9 @@ saveRDS(xset, file=paste0(mode,"_xset.rds"))
 
 #KL 1/15/2022
 ##the pieces that follow were what Erin has in CAMERA.R
-setwd("~/UntargCode/output_dir/xcms2")
+#setwd("~/UntargCode/output_dir/xcms2")
 
-# Ion Mode
+# Ion Mode (now need both)
 modes <- c("pos","neg")
 
 # Repeat first parts of CAMERA separately for ion modes

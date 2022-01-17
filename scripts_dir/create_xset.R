@@ -1,15 +1,17 @@
-#KL note - why is this run using srun and not sbatch? 
 suppressMessages(library(xcms))
 
-setwd("~/UntargCode/output_dir/xcms2")
+#setwd("~/UntargCode/output_dir/xcms2") #KL change
+setwd(paste0(args[1]))
 
-# polarity mode
-mode <- "neg"
+# polarity mode #KL change
+#mode <- "pos"
+mode <- paste0(args[2])
 
 # Load the MS OnDisk object combined in previous script
 load(file=paste0("xcms2_final-",mode,".RData"))
 
 # This function retrieve a xset like object and fixes the error of sample class naming, @author Gildas Le Corguille lecorguille@sb-roscoff.fr
+#? Does this help me? KL
 getxcmsSetObject <- function(xobject) {
     # XCMS 1.x
     if (class(xobject) == "xcmsSet")
@@ -29,6 +31,8 @@ getxcmsSetObject <- function(xobject) {
 # Create the xcmsSet object
 #xset <- getxcmsSetObject(processedData) ? this will complain about MS2 data, not sure how Erin got it to work
 xset <- as(filterMsLevel(processedData, msLevel = 1L), "xcmsSet") #from KL code
+#I think I need this too (KL 1/17/2022)
+sampclass(xset) <- xset@phenoData$subset.name
 
 # Use fill peaks 
 xset <- fillPeaks(xset, method = "chrom")

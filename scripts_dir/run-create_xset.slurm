@@ -13,7 +13,7 @@
 dir="$HOME/UntargCode"
 cd "$dir"
 
-work_dir="$/output_dir/xcms2"
+work_dir="$dir/output_dir/xcms2"
 
 echo `date`
 echo This is job $SLURM_JOB_ID

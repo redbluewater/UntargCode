@@ -24,7 +24,4 @@ conda activate untargKL4
 
 Rscript --no-save --no-restore --verbose $dir/scripts_dir/create_xset.R "$work_dir" "neg"> "$work_dir/${SLURM_JOB_NAME}_neg.Rout" 2>&1 > $work_dir/${SLURM_JOB_NAME}_neg.log
 
-Rscript --no-save --no-restore --verbose $dir/scripts_dir/xcms2.R "$in_dir" "$out_dir" "neg" > "$out_dir/${SLURM_JOB_NAME}_neg.Rout" 2>&1 >$out_dir/${SLURM_JOB_NAME}_neg.log
-
-
 echo `date`

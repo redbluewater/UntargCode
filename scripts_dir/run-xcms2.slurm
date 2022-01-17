@@ -26,4 +26,4 @@ CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh
 conda activate untargKL4
 
-Rscript --no-save --no-restore --verbose $dir/scripts_dir/xcms2.R "$in_dir" "$out_dir" "pos" > "$out_dir/${SLURM_JOB_NAME}_pos.Rout" 2>&1 >$out_dir/${SLURM_JOB_NAME}_pos.log
+Rscript --no-save --no-restore --verbose $dir/scripts_dir/xcms2.R "$in_dir" "$out_dir" "$ionMode" > "$out_dir/${SLURM_JOB_NAME}_$ionMode.Rout" 2>&1 >$out_dir/${SLURM_JOB_NAME}_$ionMode.log

@@ -65,6 +65,9 @@ This is a quick R script to create a tab-delimited metadata file of all the sequ
 
 ```sbatch scripts_dir/run-metadata.slurm```
 
+Change this to send in ionMode as a variable so I don't have to edit all the slurm scripts each time I change ion mode\
+```sbatch --export=ionMode="pos" scripts_dir/run-metadata.slurm```
+
 Check how many files you have 
 ```wc -l metadata_{neg/pos}.txt```
 

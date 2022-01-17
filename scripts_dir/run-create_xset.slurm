@@ -10,10 +10,10 @@
 #SBATCH --error=create_xset.error
 
 
-dir="$HOME/UntargCode/output_dir/xcms2"
+dir="$HOME/UntargCode"
 cd "$dir"
 
-work_dir="/output_dir/xcms2"
+work_dir="$/output_dir/xcms2"
 
 echo `date`
 echo This is job $SLURM_JOB_ID
@@ -23,5 +23,8 @@ source $CONDA_BASE/etc/profile.d/conda.sh
 conda activate untargKL4
 
 Rscript --no-save --no-restore --verbose $dir/scripts_dir/create_xset.R "$work_dir" "neg"> "$work_dir/${SLURM_JOB_NAME}_neg.Rout" 2>&1 > $work_dir/${SLURM_JOB_NAME}_neg.log
+
+Rscript --no-save --no-restore --verbose $dir/scripts_dir/xcms2.R "$in_dir" "$out_dir" "neg" > "$out_dir/${SLURM_JOB_NAME}_neg.Rout" 2>&1 >$out_dir/${SLURM_JOB_NAME}_neg.log
+
 
 echo `date`

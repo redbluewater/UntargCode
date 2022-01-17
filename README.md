@@ -26,7 +26,7 @@ I forked Erin's GitHub repository and then used Git Bash (in a separate window f
 ```git add -A```\
 ```git commit -am "Brief description goes here"``` (can use the bit in quotes to describe the update)\
 ```git push```\
-(enter the passcode I use to get files to git)\
+(enter the passcode I use to get files to git)
 
 Then, in the bash window where I have Poseidon open,  I use this command:\
 ```git pull https://github.com/KujawinskiLaboratory/UntargCode.git```
@@ -46,8 +46,8 @@ You use conda to gather all the pieces you need: R and its various packages. For
 ```conda config --set restore_free_channel true``` (need to search older channels that are off by default to get xcms to load)\
 ```conda install bioconductor-xcms=3.12.0``` \
 ```conda install r-gtools```\
-```conda install bioconductor-camera=1.46.0```
-```conda env export > untargKL3.yml``` \
+```conda install bioconductor-camera=1.46.0```\
+```conda env export > untargKL3.yml``` 
 
 At this point you have your configuration file, edit it locally to change the environment to be untargKL3.yml --> do this by setting the first row to ```name: untargKL3.yml``` and at the very end of the file, edit this ```prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL3```. Then, go into the various slurm scripts which follow and change them all to read ```conda activate untargKL3```
 
@@ -98,12 +98,12 @@ Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS 
 
 At this point I (Krista) only have one ion mode of data. Erin's code for CAMERA code assumes that both ion modes have been processed because there is a comparison step. 
 
-```sbatch scripts_dir/run-camera_KL.slurm```\
+```sbatch scripts_dir/run-camera_KL.slurm```
 
 ## Misc. handy functions I seem to use over and over
 ```conda info --envs```\
 ```conda search r-base```\
-```squeue -u klongnecker```]
+```squeue -u klongnecker```
 
 This will let you open up an R window for testing on Poseidon (useful for testing)\
 ```srun -p compute --time=01:00:00 --ntasks-per-node=1 --mem=10gb --pty bash```\

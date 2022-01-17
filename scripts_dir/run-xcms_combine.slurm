@@ -22,4 +22,4 @@ CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh
 conda activate untargKL4
 
-Rscript --no-save --no-restore --verbose $dir/scripts_dir/xcms_combine.R "$in_dir" "neg" > "$in_dir/${SLURM_JOB_NAME}_neg.Rout" 2>&1 >$in_dir/${SLURM_JOB_NAME}_neg.log
+Rscript --no-save --no-restore --verbose $dir/scripts_dir/xcms_combine.R "$in_dir" "pos" > "$in_dir/${SLURM_JOB_NAME}_pos.Rout" 2>&1 >$in_dir/${SLURM_JOB_NAME}_pos.log

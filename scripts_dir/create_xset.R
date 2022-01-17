@@ -6,7 +6,7 @@ setwd("~/UntargCode/output_dir/xcms2")
 #setwd(input_dir)
 
 # polarity mode
-mode <- "neg"
+mode <- "pos"
 #this also fails
 #mode <- paste0(args[2])
 

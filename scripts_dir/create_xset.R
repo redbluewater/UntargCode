@@ -1,15 +1,15 @@
 args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(xcms))
 
-setwd("~/UntargCode/output_dir/xcms2")
+#setwd("~/UntargCode/output_dir/xcms2")
 #this fails, but I cannot figure out why
-#input_dir <- paste0(args[1])
+input_dir <- paste0(args[1])
 #setwd(input_dir)
 
 # polarity mode
-mode <- "pos"
+#mode <- "pos"
 #this also fails
-#mode <- paste0(args[2])
+mode <- paste0(args[2])
 
 # Load the MS OnDisk object combined in previous script
 load(file=paste0("xcms2_final-",mode,".RData"))

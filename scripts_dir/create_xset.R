@@ -11,7 +11,7 @@ ionMode <- paste0(args[2])
 load(file=paste0("xcms2_final-",ionMode,".RData"))
 
 # This function retrieve a xset like object and fixes the error of sample class naming, @author Gildas Le Corguille lecorguille@sb-roscoff.fr
-#? Does this help me? KL
+#? Does this help me? I think the code inserted at line 35 (from me) does the same thing
 getxcmsSetObject <- function(xobject) {
     # XCMS 1.x
     if (class(xobject) == "xcmsSet")
@@ -39,4 +39,5 @@ xset <- fillPeaks(xset, method = "chrom")
 dim(xset@groups)
 
 # Save
+file.create(paste0(ionMode,"testing.csv"))
 saveRDS(xset, file=paste0(ionMode,"_xset.rds"))

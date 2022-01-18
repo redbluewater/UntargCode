@@ -40,7 +40,9 @@ sampclass(xset) <- xset@phenoData$subset.name
 xset <- fillPeaks(xset, method = "chrom")
 dim(xset@groups)
 
+print("just before save")
 # Save
 file.create(paste0(ionMode,"testing.csv"))
 saveRDS(xset, file=paste0(ionMode,"_xset.rds"))
 
+print("just after save")

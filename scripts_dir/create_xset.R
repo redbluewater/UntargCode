@@ -32,9 +32,11 @@ getxcmsSetObject <- function(xobject) {
 
 # Create the xcmsSet object
 #xset <- getxcmsSetObject(processedData) ? this will complain about MS2 data, not sure how Erin got it to work
-suppressWarnings(xset <- as(processedData, 'xcmsSet'))
-xset <- as(filterMsLevel(processedData, msLevel = 1L), "xcmsSet") #from KL code
-#I think I need this too (KL 1/17/2022)
+suppressWarnings(xset <- as(filterMsLevel(processedData, msLevel = 1L), "xcmsSet"))
+
+#xset <- as(filterMsLevel(processedData, msLevel = 1L), "xcmsSet") #from KL code
+
+#I need this too (KL 1/17/2022), that's the warning I just suppressed
 sampclass(xset) <- xset@phenoData$subset.name
 
 # Use fill peaks 

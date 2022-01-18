@@ -1,4 +1,4 @@
-args = commandArgs(trailingOnly=TRUE) #need this to use slurm(so it seems) 
+args = commandArgs(trailingOnly=TRUE) #need this to use slurm(so it seems)  
 suppressMessages(library(xcms))
 
 #setwd("~/UntargCode/output_dir/xcms2")

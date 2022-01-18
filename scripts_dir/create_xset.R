@@ -1,18 +1,16 @@
-args = commandArgs(trailingOnly=TRUE)
+args = commandArgs(trailingOnly=TRUE) #need this to use slurm(so it seems) 
 suppressMessages(library(xcms))
 
 #setwd("~/UntargCode/output_dir/xcms2")
-#this fails, but I cannot figure out why
 input_dir <- paste0(args[1])
 #setwd(input_dir)
 
 # polarity mode
-#mode <- "pos"
-#this also fails
-mode <- paste0(args[2])
+#ionMode <- "pos"
+ionMode <- paste0(args[2])
 
 # Load the MS OnDisk object combined in previous script
-load(file=paste0("xcms2_final-",mode,".RData"))
+load(file=paste0("xcms2_final-",ionMode,".RData"))
 
 # This function retrieve a xset like object and fixes the error of sample class naming, @author Gildas Le Corguille lecorguille@sb-roscoff.fr
 #? Does this help me? KL
@@ -43,4 +41,4 @@ xset <- fillPeaks(xset, method = "chrom")
 dim(xset@groups)
 
 # Save
-saveRDS(xset, file=paste0(mode,"_xset.rds"))
+saveRDS(xset, file=paste0(ionMode,"_xset.rds"))

@@ -22,6 +22,6 @@ CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh
 conda activate untargKL4
 
-Rscript --no-save --no-restore --verbose $dir/scripts_dir/create_xset.R "$work_dir" "$ionMode"> "$work_dir/${SLURM_JOB_NAME}_$ionMode.Rout" 2>&1 > $work_dir/${SLURM_JOB_NAME}_$ionMode.log
+Rscript --no-save --no-restore --verbose $dir/scripts_dir/create_xset.R "$work_dir" "$ionMode"> "$dir/${SLURM_JOB_NAME}_$ionMode.Rout" 2>&1 > $dir/${SLURM_JOB_NAME}_$ionMode.log
 
 echo `date`

@@ -1,8 +1,10 @@
 args = commandArgs(trailingOnly=TRUE) #need this to use slurm(so it seems)  
 suppressMessages(library(xcms))
 
-work_dir <- paste0(args[1])
-setwd(work_dir)
+#work_dir <- paste0(args[1])
+#setwd(work_dir)
+setwd("~/UntargCode/output_dir/xcms2")
+
 
 # polarity mode
 ionMode <- paste0(args[2])
@@ -41,3 +43,4 @@ dim(xset@groups)
 # Save
 file.create(paste0(ionMode,"testing.csv"))
 saveRDS(xset, file=paste0(ionMode,"_xset.rds"))
+

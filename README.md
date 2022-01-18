@@ -1,6 +1,5 @@
 # Pipeline for pre-processing a multi-batch untargeted exometabolome experiment with XCMS on a HPC
-:construction: :warning: This is a **work in progress** :construction: :warning:
-
+18 January 2022
 I (Krista) am working off the code written by Erin McParland and updating the information in the README file here as I go. I am a newbie to the HPC, so some details here may be obvious to others, but I needed more information before I could get started. First up, remember to edit the slurm scripts so they send the email notifications to the right person.
 
 
@@ -9,7 +8,7 @@ I (Krista) am working off the code written by Erin McParland and updating the in
 ## Some steps before getting into the R/XCMS work
 1. Convert the .RAW files from the mass spectrometer into mzML files using msConvert
 2. Use SCP to transfer those files to Poseidon (we are putting the files into our /omics/kujawinski/data folder)
-3. Make a CSV file that contains the file names, ion mode, and good data markers. We do this from the sequence file that is created during the sample run on the LCMS and then add columns for 'ionMode' (can be pos or neg) and goodData (where we use 1 to keep data, and 0 to ignore a file).
+3. Make a CSV file that contains the file names, ion mode, and good data markers. We do this from the sequence file that is created during the sample run on the LCMS and then add columns for 'ionMode' (can be pos or neg) and goodData (where we use 1 to keep data, and 0 to ignore a file, see exampleInfoFile.csv)
 4. Put this CSV file into the folder with the mzML files on Poseidon (again with SCP). It will be used to generate a metadata file used in various points of the analysis.
 
 ## How to access Poseidon, WHOI's HPC computing environment
@@ -21,7 +20,7 @@ Once you are logged into Poseidon, activate the conda module with ```module load
 
 
 ## Moving around code - Windows 10 - GitHub - Poseidon (Krista's setup)
-I forked Erin's GitHub repository and then used Git Bash (in a separate window from the bash window I use to access Poseidon) to pull the GitHub repository onto my local desktop computer. On my local computer I use Geany to edit the text files. To get the files back to GitHub, I first had to futz around with setting up an SSH key in GitHub as I had not done that yet. My git skills are poor (and my handy cheat sheet is not available to me at the moment). I settled on using this set of commands to put the files I edit locally back into GitHub:
+I forked Erin's GitHub repository and then used Git Bash (in a separate window from the bash window I use to access Poseidon) to pull the GitHub repository onto my local desktop computer. On my local computer I use Geany to edit the text files. To get the files back to GitHub, I first had to futz around with setting up an SSH key in GitHub as I had not done that yet. I settled on using this set of commands to put the files I edit locally back into GitHub:
 
 ```git add -A```\
 ```git commit -am "Brief description goes here"``` (can use the bit in quotes to describe the update)\
@@ -29,12 +28,12 @@ I forked Erin's GitHub repository and then used Git Bash (in a separate window f
 (enter the passcode I use to get files to git)
 
 Then, in the bash window where I have Poseidon open,  I use this command:\
-```git pull https://github.com/KujawinskiLaboratory/UntargCode.git```
+```git pull https://github.com/KujawinskiLaboratory/UntargCode.git``` or just ```git pull```
 
-Remember that if I edit the README.md file here in GitHub (online), I need to do a local ```git pull``` before I can push any edits back to GitHub. I suspect there is a way around this with a more specific git command, but I haven't bothered to look into that too much.
+Remember that if I edit the README.md file here in GitHub (online), I need to do a local ```git pull``` before I can push any edits back to GitHub. I suspect there is a way around this with a more specific git command, but I haven't bothered to look into that.
 
 ## Create the conda environment you will need
-You use conda to gather all the pieces you need: R and its various packages. For example, I needed R version 3.12 (or so) which required updating Erin's YML file. This is quite a process (read, hassle). To do this, you need to set up a conda environment, install all the packages in that environment, and export the yml file to use in the future. Erin's text file (create_untargmetab_conda_poseidon.txt detailed what she did). Here's the steps that worked for me (after logging into Poseidon):\
+You use conda to gather all the pieces you need: R and its various packages. For example, I needed R version 3.12 (or so) which required updating Erin's YML file. This is quite a process (read, hassle). To do this, you need to set up a conda environment, install all the packages in that environment, and export the yml file to use in the future. Erin's text file (create_untargmetab_conda_poseidon.txt) detailed what she did. Here's the steps that worked for me (after logging into Poseidon):\
 ```module load anaconda/5.1```\
 ```conda config --add channels conda-forge``` (you cannot get R>3.6 from anaconda)\
 ```conda config --set channel_priority strict``` (may not be necessary)\
@@ -43,68 +42,60 @@ You use conda to gather all the pieces you need: R and its various packages. For
 ```conda activate r_4.0.5``` (activate it, nothing there yet)\
 ```conda install -c conda-forge r-base=4.0.5```\
 ```conda install r-essentials``` (that syntax is from memory)\
-```conda config --set restore_free_channel true``` (need to search older channels that are off by default to get xcms to load)\
+```conda config --set restore_free_channel true``` (need to search older channels that are off by default to get xcms to install)\
 ```conda install bioconductor-xcms=3.12.0``` \
 ```conda install r-gtools```\
 ```conda install bioconductor-camera=1.46.0```\
-```conda env export > untargKL3.yml``` 
+```conda env export > untargKL4.yml``` 
 
-At this point you have your configuration file, edit it locally to change the environment to be untargKL3.yml --> do this by setting the first row to ```name: untargKL3.yml``` and at the very end of the file, edit this ```prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL3```. Then, go into the various slurm scripts which follow and change them all to read ```conda activate untargKL3```
+At this point you have your configuration file, edit it locally to change the environment to be untargKL4.yml --> do this by setting the first row to ```name: untargKL4.yml``` and at the very end of the file, edit this ```prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL4```. Then, go into the various slurm scripts which follow and change them all to read ```conda activate untargKL4```
 
-## Step 1: Install the conda environment via the yml file:
-```conda env create --file untargKL3.yml```
+## Install the conda environment via the yml file:
+```conda env create --file untargKL4.yml```
 
 You only have to create the environment once, anytime you want it in the future, just activate it:
-```conda activate untargKL3```
+```conda activate untargKL4```
 
-Remember that each sbatch command creates a new compute environment, so all the slurm scripts all have this statement in them: ```conda activate untargKL3``` where untargKL3 is the name established by the untargmetab.yml file above. Also remember that you have activate the module with conda before doing anything (see above in the step about accessing Poseidon, repeating here because I keep forgetting).
+Remember that each sbatch command creates a new compute environment, so all the slurm scripts all have this statement in them: ```conda activate untargKL4``` where untargKL4 is the name established by the yml file above. Also remember that you have activate the module with conda before doing anything (see above in the step about accessing Poseidon, repeating here because I keep forgetting).
 
 
-## Step 2: Create metadata
-This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). *Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1).* It will also add an extra column to the metadata with the path of each mzml file that is useful for later. You may need to edit the string used to match files in the create_metadata.R script. Krista's file names did not have pos/neg in the name, but Erin's did. 
+## Step 1: Create metadata
+This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1, see exampleInfoFile.csv) It will also add an extra column to the metadata with the path of each mzml file that is useful for later. You may need to edit the string used to match files in the create_metadata.R script. Krista's file names did not have pos/neg in the name, but Erin's did. 
 
-```sbatch --export=ionMode="pos" scripts_dir/run-metadata.slurm```
-
-Change this to send in ionMode as a variable so I don't have to edit all the slurm scripts each time I change ion mode\
-```sbatch --export=ionMode="pos" scripts_dir/run-metadata.slurm```
+Set this up to send in ionMode as a variable so I don't have to edit all the slurm scripts each time I change ion mode\
+```sbatch --export=ionMode="pos" scripts_dir/step1-metadata.slurm```
 
 Check how many files you have 
 ```wc -l metadata_{neg/pos}.txt```
 
-I (Erin) have 502 and I will use this number in Step 3 to set the total number of array jobs that will be run.
+Use this number in Step 2 to set the total number of array jobs that will be run.
 
-I (Krista) edited the script so that it spits out a file ("metadata_mismatchissue.csv") if there are no matches found between the list of files provided and the files actually available on Poseidon. 
-
-
-
-## Step 3: peak picking and peak shape evaluation
+## Step 2: peak picking and peak shape evaluation
 Run the peak picking and peak shape on each file individually with an array job. This step is an 'embarassingly parallel' computation so I use a job array to quickly process hundreds of files. I run 40 jobs at a time and each jobs takes about 20 minutes each. I filter the peaks based on RMSE < 0.125 Then use peak cleaning functions to remove wide peaks (<40 s) and merge neighboring peaks. For 500 files, I am done with Step 3 in ~3 hours :clap: :grin: :clap:
 
-```sbatch --export=ionMode="pos" scripts_dir/run-xcms1.slurm```
+```sbatch --export=ionMode="pos" scripts_dir/step2-xcms1.slurm```
 
-Update status of jobs to your screen if you're interested (this is how I discovered the issue mentioned above of skipping files) ```watch -n 60 squeue -u emcparland```
-
-## Step 4: combine picked peaks
+## Step 3: combine picked peaks
 To speed up peak picking, we performed peak picking as an array. Now combine into a single MS OnDisk object
 
-```sbatch --export=ionMode="pos" scripts_dir/run-xcms_combine.slurm```
+```sbatch --export=ionMode="pos" scripts_dir/step3-xcms_combine.slurm```
 
-## Step 5: perform retention time correction, grouping and fill peaks
+## Step 4: perform retention time correction, grouping and fill peaks
 This will use xcms to clean up peak picking with refineChromPeaks, then perform orbiwarp retention time correction, correspondence (peak grouping), and fill peaks. As I ran a pooled sample every five samples in these batches, I use the subset option for retention time alignment and peak grouping. At each stage a new RData object is saved in case something crashes in the middle or you want to look at the files while they are running. Finally it will output two csv files, one with all of the peaks ("aligned.csv") and the second with the feature count table ("picked.csv")
 
 Note: For reference, when I was testing this code with ~100 samples, I could run this on one 'small' memory node of 185GB. However, my actual dataset of 500+ samples required being run on the 'bigmem' partition with 500GB of memory. The refinechrompeaks and fill peaks steps require loading the original raw files and therefore required the bigmem memory space (obiwarp and correspondence require much less memory).
 
-```sbatch --export=ionMode="pos" scripts_dir/run-xcms2.slurm```
+```sbatch --export=ionMode="pos" scripts_dir/step4-xcms2.slurm```
 
-## Step 6: Create an xset object 
+## Step 5: Create an xset object 
 Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I (Erin) had to use bigmem to make fillPeaks run. 
 
-```sbatch --export=ionMode="pos" scripts_dir/run-create_xset.slurm```
+```sbatch --export=ionMode="pos" scripts_dir/step5-create_xset.slurm```
 
-Now go back and repeat steps #1 through 6 for the other ion mode.
-## Step 7: Use CAMERA to create pseudospectra
+Now go back and repeat steps #1 through 5 for the other ion mode.
+## Step 6: Use CAMERA to create pseudospectra
 Once you have both ion modes done, you are ready to run the script for CAMERA.
-```sbatch scripts_dir/run-camera.slurm```
+```sbatch scripts_dir/step6-camera.slurm```
 
 ## Misc. handy functions I seem to use over and over
 ```conda info --envs```\
@@ -137,4 +128,5 @@ Type into local browser: ```localhost:9000``` and voila!
 [Chetnik et al. 2020](https://link.springer.com/article/10.1007/s11306-020-01738-3) published MetaClean for a less biased and much faster method to clean up peaks.
 Use the MetaClean.R script to train the classifier and then apply to the full dataset. Before you create the global classifier, you need to create a pdf of EIC's (I classified 2000 for development and 1000 for testing the resulting classifier) as GOOD or BAD peaks. See Chetnik et al. for helpful examples to classify your peaks. After training the classifier then apply to the full dataset.
 
-
+##
+Update status of jobs to your screen if you're interested (this is how I discovered the issue mentioned above of skipping files) ```watch -n 60 squeue -u klongnecker```

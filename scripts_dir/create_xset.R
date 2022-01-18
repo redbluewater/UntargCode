@@ -1,3 +1,4 @@
+args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(xcms))
 
 setwd("~/UntargCode/output_dir/xcms2")

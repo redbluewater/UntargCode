@@ -1,12 +1,10 @@
 args = commandArgs(trailingOnly=TRUE) #need this to use slurm(so it seems)  
 suppressMessages(library(xcms))
 
-#setwd("~/UntargCode/output_dir/xcms2")
-input_dir <- paste0(args[1])
-#setwd(input_dir)
+work_dir <- paste0(args[1])
+setwd(work_dir)
 
 # polarity mode
-#ionMode <- "pos"
 ionMode <- paste0(args[2])
 
 # Load the MS OnDisk object combined in previous script

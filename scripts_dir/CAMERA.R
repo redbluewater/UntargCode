@@ -1,7 +1,9 @@
+args = commandArgs(trailingOnly=TRUE) 
 suppressMessages(library(xcms))
 suppressMessages(library(CAMERA))
 
-setwd("~/UntargCode/output_dir/xcms2")
+wDir <- paste0(args[1])
+setwd(wDir)
 
 # Ion Mode
 modes <- c("pos","neg")

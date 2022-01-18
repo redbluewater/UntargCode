@@ -1,0 +1,8 @@
+Bracket Type=4,,,,,,,,,
+Sample Type,File Name,Sample ID,Path,Instrument Method,Position,Inj Vol,Sample Name,ionMode,goodData
+Blank,mtab_BIOSSCOPE_SargPatch_lumos_110221_001,,D:\Kujawinski\2021_1102 BIOSSCOPE SargePatch,C:\Xcalibur\methods\Training\UPLC_pos_HCD_OT_062018_noIC_MS2_7p5k,R:A1,5,MQ Blank pos (hsst3#12 11.02.21 probe 3),pos,0
+Blank,mtab_BIOSSCOPE_SargPatch_lumos_110221_002,,D:\Kujawinski\2021_1102 BIOSSCOPE SargePatch,C:\Xcalibur\methods\Training\UPLC_pos_HCD_OT_062018_noIC_MS2_7p5k,R:A1,5,MQ Blank pos,pos,0
+Unknown,mtab_BIOSSCOPE_SargPatch_lumos_110221_003,,D:\Kujawinski\2021_1102 BIOSSCOPE SargePatch,C:\Xcalibur\methods\Training\UPLC_pos_HCD_OT_062018_noIC_MS2_7p5k,R:E8,5,mtab mix 1-7  NCC2 500 ng/ml mix 1-7 pos,pos,0
+Unknown,mtab_BIOSSCOPE_SargPatch_lumos_110221_004,,D:\Kujawinski\2021_1102 BIOSSCOPE SargePatch,C:\Xcalibur\methods\Training\UPLC_neg_HCD_OT_062018_noIC_MS2_7p5k,R:E8,5,mtab mix 1-7 NCC2 500 ng/ml mix 1-7 neg,neg,0
+Unknown,mtab_BIOSSCOPE_SargPatch_lumos_110221_005,,D:\Kujawinski\2021_1102 BIOSSCOPE SargePatch,C:\Xcalibur\methods\Training\UPLC_pos_HCD_OT_062018_noIC_MS2_7p5k,R:A2,5,BIOSSCOPE Monster 1:4 pos,pos,1
+Unknown,mtab_BIOSSCOPE_SargPatch_lumos_110221_006,,D:\Kujawinski\2021_1102 BIOSSCOPE SargePatch,C:\Xcalibur\methods\Training\UPLC_pos_HCD_OT_062018_noIC_MS2_7p5k,R:A2,5,BIOSSCOPE Monster 1:4 pos,pos,1

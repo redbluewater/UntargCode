@@ -80,26 +80,26 @@ I (Krista) edited the script so that it spits out a file ("metadata_mismatchissu
 ## Step 3: peak picking and peak shape evaluation
 Run the peak picking and peak shape on each file individually with an array job. This step is an 'embarassingly parallel' computation so I use a job array to quickly process hundreds of files. I run 40 jobs at a time and each jobs takes about 20 minutes each. I filter the peaks based on RMSE < 0.125 Then use peak cleaning functions to remove wide peaks (<40 s) and merge neighboring peaks. For 500 files, I am done with Step 3 in ~3 hours :clap: :grin: :clap:
 
-```sbatch scripts_dir/run-xcms1.slurm```
+```sbatch --export=ionMode="pos" scripts_dir/run-xcms1.slurm```
 
 Update status of jobs to your screen if you're interested (this is how I discovered the issue mentioned above of skipping files) ```watch -n 60 squeue -u emcparland```
 
 ## Step 4: combine picked peaks
 To speed up peak picking, we performed peak picking as an array. Now combine into a single MS OnDisk object
 
-```sbatch scripts_dir/run-xcms_combine.slurm```
+```sbatch --export=ionMode="pos" scripts_dir/run-xcms_combine.slurm```
 
 ## Step 5: perform retention time correction, grouping and fill peaks
 This will use xcms to clean up peak picking with refineChromPeaks, then perform orbiwarp retention time correction, correspondence (peak grouping), and fill peaks. As I ran a pooled sample every five samples in these batches, I use the subset option for retention time alignment and peak grouping. At each stage a new RData object is saved in case something crashes in the middle or you want to look at the files while they are running. Finally it will output two csv files, one with all of the peaks ("aligned.csv") and the second with the feature count table ("picked.csv")
 
 Note: For reference, when I was testing this code with ~100 samples, I could run this on one 'small' memory node of 185GB. However, my actual dataset of 500+ samples required being run on the 'bigmem' partition with 500GB of memory. The refinechrompeaks and fill peaks steps require loading the original raw files and therefore required the bigmem memory space (obiwarp and correspondence require much less memory).
 
-```sbatch scripts_dir/run-xcms2.slurm```
+```sbatch --export=ionMode="pos" scripts_dir/run-xcms2.slurm```
 
 ## Step 6: Create an xset object 
 Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I (Erin) had to use bigmem to make fillPeaks run. 
 
-```sbatch scripts_dir/run-create_xset.slurm```
+```sbatch --export=ionMode="pos" scripts_dir/run-create_xset.slurm```
 
 Now go back and repeat steps #1 through 6 for the other ion mode.
 ## Step 7: Use CAMERA to create pseudospectra

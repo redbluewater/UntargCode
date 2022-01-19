@@ -4,7 +4,7 @@
 #SBATCH --mail-type=FAIL,END
 #SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks-per-node=1
-#SBATCH --mem=10gb
+#SBATCH --mem=100gb
 #SBATCH --time=1:00:00
 #SBATCH --output=create_xset.out
 #SBATCH --error=create_xset.error

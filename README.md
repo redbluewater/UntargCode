@@ -89,16 +89,12 @@ Note: For reference, when I was testing this code with ~100 samples, I could run
 
 ## Step 5: Create an xset object 
 Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I (Erin) had to use bigmem to make fillPeaks run. 
+There is a note/comment that one step in create_xset.R makes and it will break the slurm script. I needed some extra pieces to make it work.
 
 ```sbatch --export=ionMode="pos" scripts_dir/step5-create_xset.slurm```
 
-(I thought that would work, but it's not...), Erin used this, and I suspect this is because of the note about the sample class naming
-```srun -p bigmem --time=02:00:00 --ntasks-per-node=1 --mem=200gb --pty bash```\
-```conda activate untargKL4```\
-```R```\
-```source("create_xset.R")``` (for example - could run this script)
-
 Now go back and repeat steps #1 through 5 for the other ion mode.
+
 ## Step 6: Use CAMERA to create pseudospectra
 Once you have both ion modes done, you are ready to run the script for CAMERA.
 ```sbatch scripts_dir/step6-camera.slurm```

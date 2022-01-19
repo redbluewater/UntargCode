@@ -32,7 +32,7 @@ getxcmsSetObject <- function(xobject) {
 
 # Create the xcmsSet object
 #xset <- getxcmsSetObject(processedData) ? this will complain about MS2 data, not sure how Erin got it to work
-suppressMessages(suppressWarnings(xset <- as(filterMsLevel(processedData, msLevel = 1L), "xcmsSet"))) 
+trycatch(xset <- as(filterMsLevel(processedData, msLevel = 1L), "xcmsSet"))
 
 #xset <- as(filterMsLevel(processedData, msLevel = 1L), "xcmsSet") #from KL code
 

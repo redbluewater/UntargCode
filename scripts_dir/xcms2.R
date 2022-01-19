@@ -3,6 +3,9 @@ args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(xcms))
 suppressMessages(library(BiocParallel))
 suppressMessages(library(gtools))
+#will need some code from Johannes Rainer to make the export to GNPS work
+source("https://raw.githubusercontent.com/jorainer/xcms-gnps-tools/master/customFunctions.R")
+
 
 date()
 
@@ -70,3 +73,69 @@ featuresIntensities<-featureValues(processedData, value = "into", method = "maxi
 dataTable<-merge(featuresDef, featuresIntensities, by = 0, all = TRUE)
 dataTable <-dataTable[, !(colnames(dataTable) %in% c("peakidx"))]
 write.csv(dataTable, file = paste0(output_dir,"/SargPatch_untarg_",ionMode,"_picked.csv"))
+
+
+#start exporting files for GNPS (adding in 1/19/2022). Messy because I am
+#retaining names from desktop computer version of this code
+
+#```{r mgf_forGNPS}
+## export the individual spectra into a .mgf file
+filteredMs2Spectra <- featureSpectra(processedData, return.type = "MSpectra") #update 4/20/2021
+filteredMs2Spectra <- clean(filteredMs2Spectra, all = TRUE)
+
+#this next line uses Johannes' code to make the MS2 into a format that can be written as an mgf file and imported into GNPS for Feature Based Molecular Networking (FBMN), handy!
+filteredMs2Spectra <- formatSpectraForGNPS(filteredMs2Spectra)
+
+fName_MS2file_all = paste0(output_dir,"/ms2spectra_all_",ionMode,".mgf")
+if (file.exists(fName_MS2file_all)) {
+  file.rename(fName_MS2file_all,'ms2spectra_all_OLD.mgf')
+}
+writeMgfData(filteredMs2Spectra, fName_MS2file_all)
+
+#```{r peakQuantTable_forGNPS}
+## get data
+featuresDef <- featureDefinitions(processedData)
+featuresIntensities <- featureValues(processedData, value = "into")
+
+## generate data table
+dataTable <- merge(featuresDef, featuresIntensities, by = 0, all = TRUE)
+dataTable <- dataTable[, !(colnames(dataTable) %in% c("peakidx"))]
+
+#head(dataTable)
+write.table(dataTable, paste0(output_dir,"/fName_featureQuant_all_",ionMode,".txt"), sep = "\t", quote = FALSE, row.names = FALSE)
+
+#```{r combineMS2_one, eval = TRUE}
+##setup which method to use:
+howToCombineMS2 = 'maxTIC' 
+#howToCombineMS2 = 'consensus' 
+switch(howToCombineMS2, 
+       maxTIC = {
+         ## Select for each feature the Spectrum2 with the largest TIC.
+        combinedMs2Spectra <- combineSpectra(filteredMs2Spectra,
+                                            fcol = "feature_id",
+                                            method = maxTic)},         
+       consensus = {
+         combinedMs2Spectra <- combineSpectra(filteredMs2Spectra, 
+                                             fcol = "feature_id", 
+                                             method = consensusSpectrum, 
+                                             mzd = 0, 
+                                             minProp = 0.1, 
+                                             ppm = 10)}
+       )
+
+
+#``` {r exportMS2, eval = TRUE}
+#Next we export the data to an mgf file (could be submitted to GNPS).
+fName_MS2file_combined <- paste0(output_dir,"/ms2spectra_combined_",ionMode,".mgf")
+
+if (file.exists(fName_MS2file_combined)) {
+  file.rename(fName_MS2file_combined,'ms2spectra_combined_OLD.mgf')
+}
+writeMgfData(combinedMs2Spectra, fName_MS2file_combined)
+
+## filter data table to contain only peaks with MSMS DF[ , !(names(DF) %in% drops)]
+consensusDataTable <- dataTable[which(dataTable$Row.names %in%
+                                      combinedMs2Spectra@elementMetadata$feature_id),]
+
+write.table(consensusDataTable, paste0(output_dir,"/fName_featureQuant_combined_",ionMode,".txt"),
+            sep = "\t", quote = FALSE, row.names = FALSE)

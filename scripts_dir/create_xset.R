@@ -11,8 +11,6 @@ ionMode <- paste0(args[2])
 # Load the MS OnDisk object combined in previous script
 load(file=paste0("xcms2_final-",ionMode,".RData"))
 
-file.create(paste0(ionMode,"_testing.csv"))
-
 # Create the xcmsSet object
 #xset <- as(filterMsLevel(processedData, msLevel = 1L), "xcmsSet") #from KL code
 #need the tryCatch to get this to run this in slurm

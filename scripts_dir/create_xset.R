@@ -24,4 +24,5 @@ xset <- fillPeaks(xset, method = "chrom")
 dim(xset@groups)
 
 # Save
+file.create(paste0(ionMode,"_testing.csv"))
 saveRDS(xset, file=paste0(ionMode,"_xset.rds"))

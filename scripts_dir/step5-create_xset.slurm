@@ -9,7 +9,6 @@
 #SBATCH --output=create_xset.out
 #SBATCH --error=create_xset.error
 
-
 dir="$HOME/UntargCode"
 cd "$dir"
 

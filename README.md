@@ -96,7 +96,7 @@ There is a note/comment that one step in create_xset.R makes and it will break t
 Now go back and repeat steps #1 through 5 for the other ion mode.
 
 ## Step 6: Use CAMERA to create pseudospectra
-Once you have both ion modes done, you are ready to run the script for CAMERA.
+Once you have both ion modes done, you are ready to run the script for CAMERA.\
 ```sbatch scripts_dir/step6-camera.slurm```
 
 ## Misc. handy functions I seem to use over and over
@@ -108,10 +108,10 @@ This will let you open up an R window for testing on Poseidon (useful for testin
 ```srun -p compute --time=01:00:00 --ntasks-per-node=1 --mem=10gb --pty bash```\
 ```conda activate untargKL4```\
 ```R```\
-```source("create_xset.R")``` (for example - could run this script)
+```source("create_xset.R")``` (for example - could run the create_xset.R script)
 
 
-# Bits from Erin's readme file, leave here for now
+# Bits from Erin's readme file
 *A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*\
 If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google.
 

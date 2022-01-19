@@ -92,6 +92,12 @@ Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS 
 
 ```sbatch --export=ionMode="pos" scripts_dir/step5-create_xset.slurm```
 
+(I thought that would work, but it's not...), Erin used this, and I suspect this is because of the note about the sample class naming
+```srun -p bigmem --time=02:00:00 --ntasks-per-node=1 --mem=200gb --pty bash```\
+```conda activate untargKL4```\
+```R```\
+```source("create_xset.R")``` (for example - could run this script)
+
 Now go back and repeat steps #1 through 5 for the other ion mode.
 ## Step 6: Use CAMERA to create pseudospectra
 Once you have both ion modes done, you are ready to run the script for CAMERA.
@@ -104,7 +110,7 @@ Once you have both ion modes done, you are ready to run the script for CAMERA.
 
 This will let you open up an R window for testing on Poseidon (useful for testing)\
 ```srun -p compute --time=01:00:00 --ntasks-per-node=1 --mem=10gb --pty bash```\
-```conda activate untargKL3```\
+```conda activate untargKL4```\
 ```R```\
 ```source("create_xset.R")``` (for example - could run this script)
 

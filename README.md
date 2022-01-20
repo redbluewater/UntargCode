@@ -1,5 +1,5 @@
 # Pipeline for pre-processing a multi-batch untargeted exometabolome experiment with XCMS on a HPC
-18 January 2022
+20 January 2022
 I (Krista) am working off the code written by Erin McParland and updating the information in the README file here as I go. I am a newbie to the HPC, so some details here may be obvious to others, but I needed more information before I could get started. First up, remember to edit the slurm scripts so they send the email notifications to the right person.
 
 
@@ -112,7 +112,7 @@ This will let you open up an R window for testing on Poseidon (useful for testin
 
 You can also edit text files on the HPC, though I confused myself keeping track of what is where when I did this. The most basic way to do this is \
 ```nano yourTextFile.txt```\
-Then, when you get into confusion with files changing in mulitple places\
+Then, when you run into issues with files changing in mulitple places\
 ```git stash```
 
 # Bits from Erin's README.md file

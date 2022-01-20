@@ -2,7 +2,7 @@
 20 January 2022
 I (Krista) am working off the code written by Erin McParland and updating the information in the README file here as I go. I am a newbie to the HPC, so some details here may be obvious to others, but I needed more information before I could get started. 
 
-Two key points before moving on. 
+Two key points before moving on.\ 
 **Edit the slurm scripts so they send the email notifications to you and not me**
 **Edit the parameters in the R scripts to values appropriate for your experimental system.**
 

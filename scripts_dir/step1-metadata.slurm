@@ -6,8 +6,8 @@
 #SBATCH --ntasks=1
 #SBATCH --mem=4000
 #SBATCH --time=00:10:00
-#SBATCH --output=meta.out
-#SBATCH --error=meta.error
+#SBATCH --output=/vortexfs1/home/klongnecker/UntargCode/logfiles/meta.out
+#SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles/meta.error
 
 #change to send in ionMode as a variable, will call this way
 #sbatch --export=ionMode="pos" scripts_dir/run-metadata.slurm

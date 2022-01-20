@@ -6,8 +6,8 @@
 #SBATCH --ntasks=1
 #SBATCH --mem=4000
 #SBATCH --time=00:10:00
-#SBATCH --output=/vortexfs1/home/klongnecker/UntargCode/logfiles/meta.out
-#SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles/meta.error
+#SBATCH --output=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/meta.out
+#SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/meta.error
 
 #change to send in ionMode as a variable, will call this way
 #sbatch --export=ionMode="pos" scripts_dir/run-metadata.slurm
@@ -19,7 +19,7 @@ cd "$dir"
 in_dir="/vortexfs1/omics/kujawinski/data/SargPatch/SargPatch_MSn"
 
 #setup the places to hold stuff
-log_dir="$dir/output_dir/log_files/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
+log_dir="$dir/output_dir/logfiles_dir/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
 
 if [ ! -d "$log_dir" ]; then
     mkdir -p "$log_dir"

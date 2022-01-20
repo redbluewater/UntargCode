@@ -6,8 +6,8 @@
 #SBATCH --ntasks-per-node=36
 #SBATCH --mem=500gb
 #SBATCH --time=6:00:00
-#SBATCH --output=xcms2.out
-#SBATCH --error=xcms2.error
+#SBATCH --output=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/xcms2.out
+#SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/xcms2.error
 
 dir="$HOME/UntargCode"
 cd "$dir"
@@ -19,7 +19,7 @@ if [ ! -d "$out_dir" ]; then
     mkdir -p "$out_dir"
 fi
 
-log_dir="$dir/output_dir/log_dir/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
+log_dir="$dir/output_dir/logfiles_dir/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
 
 if [ ! -d "$log_dir" ]; then
     mkdir -p "$log_dir"

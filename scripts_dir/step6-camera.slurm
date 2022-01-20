@@ -6,8 +6,8 @@
 #SBATCH --ntasks-per-node=12
 #SBATCH --mem=20gb
 #SBATCH --time=6:00:00
-#SBATCH --output=camera.out
-#SBATCH --error=camera.error
+#SBATCH --output=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/camera.out
+#SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/camera.error
 
 
 dir="$HOME/UntargCode/output_dir/xcms2"

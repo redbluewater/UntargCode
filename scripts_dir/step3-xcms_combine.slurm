@@ -7,15 +7,15 @@
 #SBATCH --cpus-per-task=36
 #SBATCH --mem=175gb
 #SBATCH --time=01:00:00
-#SBATCH --output=xcms-combine.out
-#SBATCH --error=xcms-combine.error
+#SBATCH --output=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/xcms-combine.out
+#SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/xcms-combine.error
 
 dir="$HOME/UntargCode"
 
 in_dir="$HOME/UntargCode/output_dir/xcms1"
 cd $in_dir
 
-log_dir="$dir/output_dir/log_dir/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
+log_dir="$dir/output_dir/logfiles_dir/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
 
 if [ ! -d "$log_dir" ]; then
     mkdir -p "$log_dir"

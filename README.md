@@ -1,14 +1,15 @@
 # Pipeline for pre-processing a multi-batch untargeted exometabolome experiment with XCMS on a HPC
 20 January 2022
-I (Krista) am working off the code written by Erin McParland and updating the information in the README file here as I go. I am a newbie to the HPC, so some details here may be obvious to others, but I needed more information before I could get started. First up, remember to edit the slurm scripts so they send the email notifications to the right person.
+I (Krista) am working off the code written by Erin McParland and updating the information in the README file here as I go. I am a newbie to the HPC, so some details here may be obvious to others, but I needed more information before I could get started. 
 
-
-**You should edit the parameter in the R scripts to values appropriate for your experimental system.**
+Two key points before moving on. 
+**Edit the slurm scripts so they send the email notifications to you and not me**
+**Edit the parameters in the R scripts to values appropriate for your experimental system.**
 
 ## Some steps before getting into the R/XCMS work
 1. Convert the .RAW files from the mass spectrometer into mzML files using msConvert
 2. Use SCP to transfer those files to Poseidon (we are putting the files into our /omics/kujawinski/data folder)
-3. Make a CSV file that contains the file names, ion mode, and good data markers. We do this from the sequence file that is created during the sample run on the LCMS and then add columns for 'ionMode' (can be pos or neg) and goodData (where we use 1 to keep data, and 0 to ignore a file, see exampleInfoFile.csv)
+3. Make a CSV file that contains the file names, ion mode, and good data markers. We do this from the sequence file that is created during the sample run and then add columns for 'ionMode' (can be pos or neg) and goodData (where we use 1 to keep data, and 0 to ignore a file, see *exampleInfoFile.csv*)
 4. Put this CSV file into the folder with the mzML files on Poseidon (again with SCP). It will be used to generate a metadata file used in various points of the analysis.
 
 ## How to access Poseidon, WHOI's HPC computing environment
@@ -33,7 +34,7 @@ Then, in the bash window where I have Poseidon open,  I use this command:\
 Remember that if I edit the README.md file here in GitHub (online), I need to do a local ```git pull``` before I can push any edits back to GitHub. I suspect there is a way around this with a more specific git command, but I haven't bothered to look into that.
 
 ## Create the conda environment you will need
-You use conda to gather all the pieces you need: R and its various packages. For example, I needed R version 3.12 (or so) which required updating Erin's YML file. This is quite a process (read, hassle). To do this, you need to set up a conda environment, install all the packages in that environment, and export the yml file to use in the future. Erin's text file (create_untargmetab_conda_poseidon.txt) detailed what she did. Here's the steps that worked for me (after logging into Poseidon):\
+You use conda to gather all the pieces you need: R and its various packages. For example, I needed R version 3.12 (or so) which required updating Erin's YML file. This is quite a process (read, hassle). To do this, you need to set up a conda environment, install all the packages in that environment, and export the yml file to use in the future. Erin's text file (*oldFiles/create_untargmetab_conda_poseidon.txt*) detailed what she did. Here's the steps that worked for me (after logging into Poseidon):\
 ```module load anaconda/5.1```\
 ```conda config --add channels conda-forge``` (you cannot get R>3.6 from anaconda)\
 ```conda config --set channel_priority strict``` (may not be necessary)\
@@ -41,7 +42,7 @@ You use conda to gather all the pieces you need: R and its various packages. For
 ```conda create -n r_4.0.5``` (make the environment first, otherwise this hangs forever)\
 ```conda activate r_4.0.5``` (activate it, nothing there yet)\
 ```conda install -c conda-forge r-base=4.0.5```\
-```conda install r-essentials``` (that syntax is from memory)\
+```conda install r-essentials``` \
 ```conda config --set restore_free_channel true``` (need to search older channels that are off by default to get xcms to install)\
 ```conda install bioconductor-xcms=3.12.0``` \
 ```conda install r-gtools```\
@@ -50,7 +51,7 @@ You use conda to gather all the pieces you need: R and its various packages. For
 
 At this point you have your configuration file, edit it locally to change the environment to be untargKL4.yml --> do this by setting the first row to ```name: untargKL4.yml``` and at the very end of the file, edit this ```prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL4```. Then, go into the various slurm scripts which follow and change them all to read ```conda activate untargKL4```
 
-## Install the conda environment via the yml file:
+Install the conda environment via the yml file:\
 ```conda env create --file untargKL4.yml```
 
 You only have to create the environment once, anytime you want it in the future, just activate it:
@@ -89,7 +90,7 @@ Note: For reference, when I was testing this code with ~100 samples, I could run
 
 ## Step 5: Create an xset object 
 Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I (Erin) had to use bigmem to make fillPeaks run. 
-There is a note/comment that one step in create_xset.R makes and it will break the slurm script. I needed some extra pieces to make it work.
+There is a note/comment that one step in create_xset.R makes and it will break the slurm script. I (Krista) needed some extra pieces to make it work.
 
 ```sbatch --export=ionMode="pos" scripts_dir/step5-create_xset.slurm```
 
@@ -99,7 +100,7 @@ Now go back and repeat steps #1 through 5 for the other ion mode.
 Once you have both ion modes done, you are ready to run the script for CAMERA.\
 ```sbatch scripts_dir/step6-camera.slurm```
 
-## Misc. handy functions I seem to use over and over
+## Misc. handy functions
 ```conda info --envs```\
 ```conda search r-base```\
 ```squeue -u klongnecker```

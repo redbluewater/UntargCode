@@ -20,13 +20,13 @@ cd "$dir"
 
 in_dir="/vortexfs1/omics/kujawinski/data/SargPatch/SargPatch_MSn"
 out_dir="$dir/output_dir/$SLURM_JOB_NAME"
-result_dir="$dir/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
+log_dir="$dir/output_dir/log_dir/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
 
 if [ ! -d "$out_dir" ]; then
     mkdir -p "$out_dir"
 fi
-if [ ! -d "$result_dir" ]; then
-    mkdir -p "$result_dir"
+if [ ! -d "$log_dir" ]; then
+    mkdir -p "$log_dir"
 fi
 
 echo `date`
@@ -37,6 +37,6 @@ CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh
 conda activate untargKL4
 
-Rscript --no-save --no-restore --verbose $dir/scripts_dir/xcms1.R "$in_dir" "$ionMode" "$SLURM_ARRAY_TASK_ID" "$out_dir" > "$result_dir/${SLURM_JOB_NAME}_$ionMode_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.Rout" 2>&1 > "$result_dir/${SLURM_JOB_NAME}_$ionMode_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.log"
+Rscript --no-save --no-restore --verbose $dir/scripts_dir/xcms1.R "$in_dir" "$ionMode" "$SLURM_ARRAY_TASK_ID" "$out_dir" > "$log_dir/${SLURM_JOB_NAME}_$ionMode_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.Rout" 2>&1 > "$log_dir/${SLURM_JOB_NAME}_$ionMode_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.log"
 
 echo `date`

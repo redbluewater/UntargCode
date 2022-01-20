@@ -1,0 +1,1 @@
+Use this folder to hold logfiles from slurm - must have the folder made before running any scripts or else slurm will not run.

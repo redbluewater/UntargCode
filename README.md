@@ -110,8 +110,12 @@ This will let you open up an R window for testing on Poseidon (useful for testin
 ```R```\
 ```source("create_xset.R")``` (for example - could run the create_xset.R script)
 
+You can also edit text files on the HPC, though I confused myself keeping track of what is where when I did this. The most basic way to do this is \
+```nano yourTextFile.txt```\
+Then, when you get into confusion with files changing in mulitple places\
+```git stash```
 
-# Bits from Erin's readme file
+# Bits from Erin's README.md file
 *A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*\
 If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google.
 

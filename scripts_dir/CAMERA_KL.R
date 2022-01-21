@@ -48,7 +48,7 @@ xsa.pos <- an}
 	
 ##put in pieces to export pieces needed for GNPS/IIN (adding in 1/19/2022)
 #```{r getEdgeList, eval=TRUE}
-edgelist <- getEdgelist(xsaFA)
+edgelist <- getEdgelist(an)
 edgelist[1:8, ]
 
 #```{r eval = TRUE, message = FALSE}

@@ -9,12 +9,12 @@
 #SBATCH --output=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/camera.out
 #SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/camera.error
 
-
-dir="$HOME/UntargCode/output_dir/xcms2"
+dir="$HOME/UntargCode"
 cd "$dir"
 
-work_dir="/output_dir/xcms2"
-log_dir="$dir/logfiles_dir/$SLURM_JOB_NAME" 
+work_dir="$dir/output_dir/xcms2"
+
+log_dir="$dir/logfiles_dir/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
 
 echo `date`
 echo This is job $SLURM_JOB_ID

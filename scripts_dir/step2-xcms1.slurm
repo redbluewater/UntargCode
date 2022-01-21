@@ -20,7 +20,7 @@ cd "$dir"
 
 in_dir="/vortexfs1/omics/kujawinski/data/SargPatch/SargPatch_MSn"
 out_dir="$dir/output_dir/$SLURM_JOB_NAME"
-log_dir="$dir/logfiles_dir/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
+log_dir="$dir/logfiles_dir/$SLURM_JOB_NAME" #need a folder to hold the output results text files - there are zillions of them. 
 
 if [ ! -d "$out_dir" ]; then
     mkdir -p "$out_dir"

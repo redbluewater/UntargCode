@@ -14,7 +14,7 @@ cd "$dir"
 
 work_dir="$dir/output_dir/xcms2"
 
-log_dir="$dir/logfiles_dir" #use a folder to hold the output results 
+log_dir="$dir/logfiles_dir" 
 
 echo `date`
 echo This is job $SLURM_JOB_ID

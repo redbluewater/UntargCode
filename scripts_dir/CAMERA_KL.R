@@ -62,7 +62,7 @@ write.csv(edgelist_sub, file = paste0("edgelist_",ionMode,".csv"), row.names = F
 write.table(dataTable, file = paste0("fName_featureQuant_afterCAMERA_",ionMode,".txt"),
             row.names = FALSE, quote = FALSE, sep = "\t", na = "")
             
-saveRDS(xsa_working,file="testing.rds")
+saveRDS(an,file="testing.rds")
             
 # Save csv of peakTable and clean up
 #write.csv(file=paste0("camera_",mode,".csv"),getPeaklist(an))

@@ -14,7 +14,7 @@ cd "$dir"
 
 work_dir="$dir/output_dir/xcms2"
 
-log_dir="$dir/logfiles_dir/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
+log_dir="$dir/logfiles_dir" 
 
 echo `date`
 echo This is job $SLURM_JOB_ID
@@ -23,6 +23,6 @@ CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh
 conda activate untargKL4
 
-Rscript --no-save --no-restore --verbose $dir/scripts_dir/CAMERA_KL.R "$work_dir" > "$log_dir/${SLURM_JOB_NAME}_${SLURM_JOB_ID}.Rout" 2>&1 > $log_dir/${SLURM_JOB_NAME}_${SLURM_JOB_ID}.log
+Rscript --no-save --no-restore --verbose $dir/scripts_dir/CAMERA_KL.R "$work_dir" > "$log_dir/${SLURM_JOB_NAME}.Rout" 2>&1 > $log_dir/${SLURM_JOB_NAME}.log
  
 echo `date`

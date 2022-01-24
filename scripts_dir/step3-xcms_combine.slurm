@@ -15,12 +15,7 @@ dir="$HOME/UntargCode"
 in_dir="$HOME/UntargCode/output_dir/xcms1"
 cd $in_dir
 
-log_dir="$dir/logfiles_dir/$SLURM_JOB_NAME" #make a folder to hold the output results text files - there are zillions of them. 
-
-if [ ! -d "$log_dir" ]; then
-    mkdir -p "$log_dir"
-fi
-
+log_dir="$dir/logfiles_dir"  
 
 echo `date`
 echo This is job $SLURM_JOB_ID

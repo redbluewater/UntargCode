@@ -12,11 +12,11 @@ modes <- c("pos","neg")
 
 # Repeat first parts of CAMERA separately for ion modes
 for (i in 1:2){
-	mode <- modes[i]
+	ionMode <- modes[i]
 # Load the MS OnDisk object combined in previous script
-	load(file=paste0("xcms2_KLtesting-",mode,".RData"))
+	load(file=paste0("xcms2_KLtesting-",ionMode,".RData"))
 # Load the xcmsSet object created for MetaClean
-	xset <- readRDS(paste0(mode,"_xset.rds"))
+	xset <- readRDS(paste0(ionMode,"_xset.rds"))
 
 # Create idx for just samples. Create annotate object. Note could use sample = NA which allows CAMERA to choose reresentative sample for each pseudospectra. Might save time?
 idx <- grep("AE2114 Sarg pool |MQ Blank", processedData@phenoData@data$Sample.Name, invert = T)
@@ -33,17 +33,17 @@ xsaFI <-findIsotopes(xsaF,ppm=3,mzabs = 0.01,minfrac = 1/nSamples,intval = "into
 xsaC <-groupCorr(xsaFI,cor_eic_th=0.9,cor_exp_th=0.8,pval=0.05, graphMethod="hcs", calcIso = TRUE, calcCiS = TRUE, calcCaS = TRUE)
 
 # Setup the file to also look for adducts, only primary adducts
-file <-system.file(paste0("rules/primary_adducts_",mode,".csv"),package = "CAMERA")
+file <-system.file(paste0("rules/primary_adducts_",ionMode,".csv"),package = "CAMERA")
 rules <-read.csv(file)
-if (mode == "neg"){
+if (ionMode == "neg"){
 an <-findAdducts(xsaC,polarity = "negative",rules=rules,ppm=3)}
-if (mode == "pos"){
+if (ionMode == "pos"){
 an <-findAdducts(xsaC,polarity = "positive",rules=rules,ppm=3)}
 
 # Save final product for combining modes
-if (mode == "neg"){
+if (ionMode == "neg"){
 xsa.neg <- an}
-if (mode == "pos"){
+if (ionMode == "pos"){
 xsa.pos <- an}
 	
 ##put in pieces to export pieces needed for GNPS/IIN (adding in 1/19/2022)
@@ -65,7 +65,7 @@ write.table(dataTable, file = paste0("fName_featureQuant_afterCAMERA_",ionMode,"
 saveRDS(an,file="testing.rds")
             
 # Save csv of peakTable and clean up
-#write.csv(file=paste0("camera_",mode,".csv"),getPeaklist(an))
+#write.csv(file=paste0("camera_",ionMode,".csv"),getPeaklist(an))
 rm(xset, xsa, xsaF, xsaFI, xsaC, an, processedData)
 }
 

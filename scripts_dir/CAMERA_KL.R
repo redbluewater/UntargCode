@@ -1,8 +1,8 @@
 args = commandArgs(trailingOnly=TRUE) 
 suppressMessages(library(xcms))
 suppressMessages(library(CAMERA))
-##will need some code from Johannes Rainer to make the export to GNPS work
-#source("https://raw.githubusercontent.com/jorainer/xcms-gnps-tools/master/customFunctions.R")
+#will need some code from Johannes Rainer to make the export to GNPS work
+source("https://raw.githubusercontent.com/jorainer/xcms-gnps-tools/master/customFunctions.R")
 
 wDir <- paste0(args[1])
 setwd(wDir)

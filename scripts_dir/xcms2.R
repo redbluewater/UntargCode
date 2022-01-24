@@ -139,3 +139,7 @@ consensusDataTable <- dataTable[which(dataTable$Row.names %in%
 
 write.table(consensusDataTable, paste0(output_dir,"/fName_featureQuant_combined_",ionMode,".txt"),
             sep = "\t", quote = FALSE, row.names = FALSE)
+
+#put another save here, I need dataTable later on to export GNPS files after CAMERA
+save(list=c("processedData","dataTable"), file = paste0(output_dir,"/xcms2_KLtesting-",ionMode,".RData"))
+

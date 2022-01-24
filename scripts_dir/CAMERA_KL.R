@@ -14,7 +14,7 @@ modes <- c("pos","neg")
 for (i in 1:2){
 	mode <- modes[i]
 # Load the MS OnDisk object combined in previous script
-	load(file=paste0("xcms2_final-",mode,".RData"))
+	load(file=paste0("xcms2_KLtesting-",mode,".RData"))
 # Load the xcmsSet object created for MetaClean
 	xset <- readRDS(paste0(mode,"_xset.rds"))
 

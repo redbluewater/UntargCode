@@ -65,14 +65,14 @@ save(list=c("processedData"), file = paste0(output_dir,"/xcms2_final-",ionMode,"
 
 # Output all peaks and save
 allPeaks<-chromPeaks(processedData)
-write.csv(allPeaks, file = paste0(output_dir,"/SargPatch_untarg_",ionMode,"_aligned.csv"))
+write.csv(allPeaks, file = paste0(output_dir,"/SargPatch_untarg_",ionMode,"_picked.csv"))
 
 # Output features and save
 featuresDef<-featureDefinitions(processedData)
 featuresIntensities<-featureValues(processedData, value = "into", method = "maxint")
 dataTable<-merge(featuresDef, featuresIntensities, by = 0, all = TRUE)
 dataTable <-dataTable[, !(colnames(dataTable) %in% c("peakidx"))]
-write.csv(dataTable, file = paste0(output_dir,"/SargPatch_untarg_",ionMode,"_picked.csv"))
+write.csv(dataTable, file = paste0(output_dir,"/SargPatch_untarg_",ionMode,"_aligned.csv"))
 
 
 #start exporting files for GNPS (adding in 1/19/2022). Messy because I am

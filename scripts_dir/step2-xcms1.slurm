@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=compute
 #SBATCH --job-name=xcms1
-#SBATCH --mail-type=FAIL
+#SBATCH --mail-type=FAIL,END
 #SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem=4gb

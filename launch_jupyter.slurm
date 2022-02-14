@@ -5,6 +5,8 @@
 #SBATCH --job-name=jupyter
 
 # Setup Environment
+CONDA_BASE=$(conda info --base)
+source $CONDA_BASE/etc/profile.d/conda.sh
 conda activate untargKL4
 
 jupyter notebook --no-browser --ip "*" \

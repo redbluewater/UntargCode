@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --partition=compute
-##SBATCH --partition=bigmem
+##SBATCH --partition=compute
+#SBATCH --partition=bigmem
 #SBATCH --mem=300gb
 #SBATCH --time=02:00:00
 #SBATCH --ntasks-per-node=2

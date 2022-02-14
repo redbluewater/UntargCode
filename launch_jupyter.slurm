@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=compute
 ##SBATCH --partition=bigmem
-#SBATCH --mem=20gb
+#SBATCH --mem=300gb
 #SBATCH --time=02:00:00
 #SBATCH --ntasks-per-node=2
 #SBATCH --job-name=jupyter
@@ -13,3 +13,4 @@ conda activate untargKL4
 
 jupyter notebook --no-browser --ip "*" \
             --notebook-dir /vortexfs1/home/klongnecker/UntargCode
+            

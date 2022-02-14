@@ -1,7 +1,8 @@
 #!/bin/bash
 #SBATCH --partition=compute
-#SBATCH --mem=20gb
+#SBATCH --mem=4gb
 #SBATCH --time=02:00:00
+#SBATCH --ntasks-per-node=1
 #SBATCH --job-name=jupyter
 
 # Setup Environment

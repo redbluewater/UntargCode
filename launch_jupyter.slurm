@@ -7,5 +7,5 @@
 # Setup Environment
 conda activate untargKL4
 
-jupyter lab --no-browser --ip "*" \
+jupyter notebook --no-browser --ip "*" \
             --notebook-dir /vortexfs1/home/klongnecker/UntargCode

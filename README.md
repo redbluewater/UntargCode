@@ -117,6 +117,21 @@ You can also edit text files on the HPC, though I confused myself keeping track 
 Then, when you run into issues with files changing in mulitple places\
 ```git stash```
 
+## Setting up to use Jupyter notebook remotely on HPC
+I thought I could avoid this, but in order to plot anything you need to setup a way to access the data and the mzML files. I was tempted to mess around and change the paths in the R file, but then I would need to move 100 gb of files to my local computer. It took me multiple hoops to figure this out.\
+Log into the HPC site and activate the conda module with ```module load anaconda/5.1```\
+Set up to require a password for Juypter notebook (I think/hope I only have to do this once):\
+```jupyter notebook --generate-config``` - this makes the .jupyter\juptyer_notebook.config.py file\
+```jupyter notebook password``` - this sets the password. Enter it twice, and remember it because you will need it later on the local computer.
+
+Then I made a slurm script to launch jupyter notebook:\
+```sbatch launch_jupyter.slurm```
+
+Once the script is run, use this to find the jobid: ```squeue -u klongnecker``` and then use that information to get the port number (e.g., 'pn083')
+
+Then, on my local computer, I used the Anaconda Power Shell to run this ```ssh -L 8888:<port number>:8888 klongnecker@poseidon.whoi.edu```\
+ Open a browser window and enter: ```localhost:8888``` and enter the password set above.
+
 # Bits from Erin's README.md file
 *A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*\
 If you're not comfortable with conda or conda+R I recommend starting by reading this [blog post by Sarah Hu](https://alexanderlabwhoi.github.io/post/anaconda-r-sarah/) and then use your friend google.

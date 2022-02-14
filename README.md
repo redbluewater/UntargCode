@@ -95,7 +95,7 @@ There is a note/comment that one step in create_xset.R makes and it will break t
 
 ```sbatch --export=ionMode="pos" scripts_dir/step5-create_xset.slurm```
 
-Now go back and repeat steps #1 through 5 for the other ion mode.
+Now go back and repeat steps #1 through 5 for the other ion mode (or get smart and run pos/neg with each slurm script in pairs)
 
 ## Step 6: Use CAMERA to create pseudospectra
 Once you have both ion modes done, you are ready to run the script for CAMERA.\

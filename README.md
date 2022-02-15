@@ -1,8 +1,8 @@
 # Pipeline for pre-processing a multi-batch untargeted exometabolome experiment with XCMS on a HPC
-20 January 2022
+15 February 2022\
 I (Krista) am working off the code written by Erin McParland and updating the information in the README file here as I go. I am a newbie to the HPC, so some details here may be obvious to others, but I needed more information before I could get started. 
 
-Make sure to edit the slurm scripts so they send the email notifications to you and not me. Also, you will have to edit the parameters in the R scripts to values appropriate for your experimental system.
+Make sure to edit the slurm scripts so they send the email notifications to the right person. Also remember to edit the parameters in the R scripts to values appropriate for your experimental system.
 
 ## Some steps before getting into the R/XCMS work
 1. Convert the .RAW files from the mass spectrometer into mzML files using msConvert
@@ -24,7 +24,7 @@ I forked Erin's GitHub repository and then used Git Bash (in a separate window f
 ```git add -A```\
 ```git commit -am "Brief description goes here"``` (can use the bit in quotes to describe the update)\
 ```git push```\
-(enter the passcode I use to get files to git)
+(enter the passcode I use to get files to GitHub)
 
 Then, in the bash window where I have Poseidon open,  I use this command:\
 ```git pull https://github.com/KujawinskiLaboratory/UntargCode.git``` or just ```git pull```
@@ -62,7 +62,7 @@ Remember that each sbatch command creates a new compute environment, so all the 
 
 
 ## Step 1: Create metadata
-This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1, see exampleInfoFile.csv) It will also add an extra column to the metadata with the path of each mzml file that is useful for later. You may need to edit the string used to match files in the create_metadata.R script. Krista's file names did not have pos/neg in the name, but Erin's did. 
+This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1, see exampleInfoFile.csv) It will also add an extra column to the metadata with the path of each mzml file that is useful for later. You may need to edit the string used to match files in the create_metadata.R script. Krista's file names did not have pos/neg in the name, but Erin's did. Also, if you change the files you want (by changing goodData), make sure old rds files are removed from the output_dir/xcms1. Any rds files in that folder will get read into the final data file.
 
 Set this up to send in ionMode as a variable so I don't have to edit all the slurm scripts each time I change ion mode\
 ```sbatch --export=ionMode="pos" scripts_dir/step1-metadata.slurm```
@@ -91,7 +91,7 @@ Note: For reference, when I was testing this code with ~100 samples, I could run
 
 ## Step 5: Create an xset object 
 Both CAMERA and MetaClean will require your data object to be in the 'old' XCMS format. This script will create this object for you. Note the fix-around for the error thrown by sample class naming. I (Erin) had to use bigmem to make fillPeaks run. 
-There is a note/comment that one step in create_xset.R makes and it will break the slurm script. I (Krista) needed some extra pieces to make it work.
+There is a note/comment that one step in create_xset.R makes and it will break the slurm script. Krista did some extra pieces to make this step work as a slurm script.
 
 ```sbatch --export=ionMode="pos" scripts_dir/step5-create_xset.slurm```
 
@@ -106,7 +106,7 @@ Once you have both ion modes done, you are ready to run the script for CAMERA.\
 ```conda search r-base```\
 ```squeue -u klongnecker```
 
-This will let you open up an R window for testing on Poseidon (useful for testing)\
+This will let you open up an R window for testing on Poseidon (useful for testing):\
 ```srun -p compute --time=01:00:00 --ntasks-per-node=1 --mem=10gb --pty bash```\
 ```conda activate untargKL4```\
 ```R```\

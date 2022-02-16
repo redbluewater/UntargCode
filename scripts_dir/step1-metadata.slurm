@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=compute
 #SBATCH --job-name=meta
-#SBATCH --mail-type=ALL
+#SBATCH --mail-type=FAIL
 #SBATCH --mail-user=klongnecker@whoi.edu 
 #SBATCH --ntasks=1
 #SBATCH --mem=4000
@@ -18,12 +18,12 @@ cd "$dir"
 
 in_dir="/vortexfs1/omics/kujawinski/data/SargPatch/SargPatch_MSn"
 
-#setup the places to hold stuff
 log_dir="$dir/logfiles_dir"
-
-if [ ! -d "$log_dir" ]; then
-    mkdir -p "$log_dir"
-fi
+#setup the places to hold stuff - NO - if this folder does not already 
+#exist before you get started, the script will fail
+#if [ ! -d "$log_dir" ]; then
+#    mkdir -p "$log_dir"
+#fi
 
 CONDA_BASE=$(conda info --base)
 source $CONDA_BASE/etc/profile.d/conda.sh

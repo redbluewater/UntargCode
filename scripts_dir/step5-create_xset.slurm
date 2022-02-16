@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=bigmem
 #SBATCH --job-name=create_xset
-#SBATCH --mail-type=FAIL,END
+#SBATCH --mail-type=FAIL
 #SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem=200gb

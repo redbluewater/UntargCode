@@ -124,6 +124,8 @@ Set up to require a password for Juypter notebook (You only have to do this once
 ```jupyter notebook --generate-config``` - this makes the .jupyter\juptyer_notebook.config.py file\
 ```jupyter notebook password``` - this sets the password. Enter it twice, and remember it because you will need it later on the local computer.
 
+```conda activate untargKL4```
+
 Then I made a slurm script to launch jupyter notebook:\
 ```sbatch launch_jupyter.slurm```
 

@@ -124,15 +124,16 @@ Set up to require a password for Juypter notebook (You only have to do this once
 ```jupyter notebook --generate-config``` - this makes the .jupyter\juptyer_notebook.config.py file\
 ```jupyter notebook password``` - this sets the password. Enter it twice, and remember it because you will need it later on the local computer.
 
-```conda activate untargKL4```
+Activate the right environment (if you have not already done so) with: ```conda activate untargKL4```
 
 Then I made a slurm script to launch jupyter notebook:\
 ```sbatch launch_jupyter.slurm```
 
 Once the script is run, use this to find the jobid: ```squeue -u klongnecker``` and then use that information to get the port number (e.g., 'pn083')
 
-On my local computer, I used the Anaconda Power Shell to run this ```ssh -L 8888:<port number>:8888 klongnecker@poseidon.whoi.edu```\
- Open a browser window and enter: ```localhost:8888``` and enter the password set above.
+On my local computer, I used the Anaconda Power Shell. First activate the R environment using ```conda activate Rstep1``` and then run this ```ssh -L 8888:<port number>:8888 klongnecker@poseidon.whoi.edu```\
+
+Open a browser window and enter: ```localhost:8888``` and enter the password set above.
 
 # Bits from Erin's README.md file
 *A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*\

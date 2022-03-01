@@ -131,7 +131,9 @@ Then I made a slurm script to launch jupyter notebook:\
 
 Once the script is run, use this to find the jobid: ```squeue -u klongnecker``` and then use that information to get the port number (e.g., 'pn083')
 
-On my local computer, I used the Anaconda Power Shell. First activate the R environment using ```conda activate Rstep1``` and then run this ```ssh -L 8888:<port number>:8888 klongnecker@poseidon.whoi.edu```\
+On my local computer, I used the Anaconda Power Shell. First activate the R environment using\
+```conda activate Rstep1``` 
+and then run this ```ssh -L 8888:<port number>:8888 klongnecker@poseidon.whoi.edu```
 
 Open a browser window and enter: ```localhost:8888``` and enter the password set above.
 

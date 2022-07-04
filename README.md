@@ -13,7 +13,7 @@ Make sure to edit the slurm scripts so they send the email notifications to the 
 ## How to access Poseidon, WHOI's HPC computing environment
 I used a Git Bash terminal window to log into poseidon. From WHOI's internal Information Systems' website, I learned I needed the following command:
 ```ssh username@poseidon.whoi.edu```
-The password is my WHOI Active Directory password. I think I have to be logged into the WHOI VPN for this to work. 
+The password is my WHOI Active Directory password. You have to be logged into the WHOI VPN for this to work. 
 
 Once you are logged into Poseidon, activate the conda module with ```module load anaconda/5.1```
 

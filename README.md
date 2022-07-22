@@ -6,7 +6,7 @@ Make sure to edit the slurm scripts so they send the email notifications to the 
 
 ## Some steps before getting into the R/XCMS work
 1. Convert the .RAW files from the mass spectrometer into mzML files using msConvert (use this script in R: ``ms_convert_tool_Lumos_v2.r``)
-2. Use SCP to transfer those files to Poseidon (we are putting the files into our /omics/kujawinski/data folder)
+2. Use SCP to transfer those files to Poseidon (we are putting the files into this folder: /vortexfs1/omics/kujawinski/data)
 3. Make a CSV file that contains the file names, ion mode, and good data markers. We do this from the sequence file that is created during the sample run and then add columns for 'ionMode' (can be pos or neg) and goodData (where we use 1 to keep data, and 0 to ignore a file, see *exampleInfoFile.csv*)
 4. Put this CSV file into the folder with the mzML files on Poseidon (again with SCP). It will be used to generate a metadata file used in various points of the analysis.
 

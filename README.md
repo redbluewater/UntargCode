@@ -129,7 +129,7 @@ Activate the right environment (if you have not already done so) with: ```conda 
 Then I made a slurm script to launch jupyter notebook:\
 ```sbatch launch_jupyter.slurm```
 
-Once the script is run, use this to find the jobid: ```squeue -u klongnecker``` and then use that information to get the port number (e.g., 'pn083')
+Once the script is run, use this to find the jobid: ```squeue -u klongnecker``` and then use that information to get the Poseidon node (e.g., 'pn083')
 
 On my local computer, I used the Anaconda Power Shell. First activate the R environment using\
 ```conda activate Rstep1``` 

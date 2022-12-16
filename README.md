@@ -5,15 +5,15 @@ I (Krista) am working off the code written by Erin McParland and updating the in
 Make sure to edit the slurm scripts so they send the email notifications to the right person. Also remember to edit the parameters in the R scripts to values appropriate for your experimental system.
 
 ## Some steps before getting into the R/XCMS work
-1. Convert the .RAW files from the mass spectrometer into mzML files using msConvert
-2. Use SCP to transfer those files to Poseidon (we are putting the files into our /omics/kujawinski/data folder)
+1. Convert the .RAW files from the mass spectrometer into mzML files using msConvert (use this script in R: ``ms_convert_tool_Lumos_v2.r``)
+2. Use SCP to transfer those files to Poseidon (we are putting the files into this folder: /vortexfs1/omics/kujawinski/data)
 3. Make a CSV file that contains the file names, ion mode, and good data markers. We do this from the sequence file that is created during the sample run and then add columns for 'ionMode' (can be pos or neg) and goodData (where we use 1 to keep data, and 0 to ignore a file, see *exampleInfoFile.csv*)
 4. Put this CSV file into the folder with the mzML files on Poseidon (again with SCP). It will be used to generate a metadata file used in various points of the analysis.
 
 ## How to access Poseidon, WHOI's HPC computing environment
 I used a Git Bash terminal window to log into poseidon. From WHOI's internal Information Systems' website, I learned I needed the following command:
 ```ssh username@poseidon.whoi.edu```
-The password is my WHOI Active Directory password. I think I have to be logged into the WHOI VPN for this to work. 
+The password is my WHOI Active Directory password. You have to be logged into the WHOI VPN for this to work. 
 
 Once you are logged into Poseidon, activate the conda module with ```module load anaconda/5.1```
 
@@ -50,7 +50,7 @@ You use conda to gather all the pieces you need: R and its various packages. For
 ```conda install bioconductor-camera=1.46.0```\
 ```conda env export > untargKL4.yml``` 
 
-At this point you have your configuration file, edit it locally to change the environment to be untargKL4.yml --> do this by setting the first row to ```name: untargKL4.yml``` and at the very end of the file, edit this ```prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL4```. Then, go into the various slurm scripts which follow and change them all to read ```conda activate untargKL4```
+At this point you have your configuration file (the yml file), edit it locally to change the environment to be untargKL4 --> do this by setting the first row to ```name: untargKL4``` and at the very end of the file, edit this ```prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL4```. Then, go into the various slurm scripts which follow and change them all to read ```conda activate untargKL4```
 
 Install the conda environment via the yml file:\
 ```conda env create --file untargKL4.yml```
@@ -124,15 +124,18 @@ Set up to require a password for Juypter notebook (You only have to do this once
 ```jupyter notebook --generate-config``` - this makes the .jupyter\juptyer_notebook.config.py file\
 ```jupyter notebook password``` - this sets the password. Enter it twice, and remember it because you will need it later on the local computer.
 
-```conda activate untargKL4```
+Activate the right environment (if you have not already done so) with: ```conda activate untargKL4```
 
 Then I made a slurm script to launch jupyter notebook:\
 ```sbatch launch_jupyter.slurm```
 
-Once the script is run, use this to find the jobid: ```squeue -u klongnecker``` and then use that information to get the port number (e.g., 'pn083')
+Once the script is run, use this to find the jobid: ```squeue -u klongnecker``` and then use that information to get the Poseidon node (e.g., 'pn083')
 
-On my local computer, I used the Anaconda Power Shell to run this ```ssh -L 8888:<port number>:8888 klongnecker@poseidon.whoi.edu```\
- Open a browser window and enter: ```localhost:8888``` and enter the password set above.
+On my local computer, I used the Anaconda Power Shell. First activate the R environment using\
+```conda activate Rstep1``` 
+and then run this ```ssh -L 8888:<port number>:8888 klongnecker@poseidon.whoi.edu```
+
+Open a browser window and enter: ```localhost:8888``` and enter the password set above.
 
 # Bits from Erin's README.md file
 *A big thank you to Krista Longnecker (WHOI) who laid the groundwork for this code and Elzbieta Lauzikaite (Imperial College London) who setup [a similar framework for pbs](https://github.com/lauzikaite/Imperial-HPC-R) that I built off*\

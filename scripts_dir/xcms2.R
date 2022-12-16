@@ -24,6 +24,7 @@ register(BPPARAM = MulticoreParam(workers=36))
 # Load params
 params <- read.csv("params.csv", row.names = 1)
 bw <- params['bw',ionMode]
+bsize <- params['bsize',ionMode]
 
 # Load the MS OnDisk object combined in previous script
 load(file=paste0(input_dir,"/xset-",ionMode,".RData"))
@@ -47,7 +48,8 @@ xset_obi@phenoData$subset.name <- "sample"
 xset_obi@phenoData$subset.name[idx] <- "pool"
 
 # Grouping (KL note - generic beginning to sample names)
-pdp<-PeakDensityParam(sampleGroups = xset_obi@phenoData$subset.name, minFraction = 0.1, minSamples = 1, bw = bw)
+#bsize is a new addition from Erin McParland and Yuting Zhu 12/2022
+pdp<-PeakDensityParam(sampleGroups = xset_obi@phenoData$subset.name, minFraction = 0.1, minSamples = 1, bw = bw, binSize = bsize)
 xset_gc<-groupChromPeaks(xset_obi, param = pdp)
 rm(xset_obi)
 save(list=c("xset_gc"), file = paste0(output_dir,"/xcms2_gc-",ionMode,".RData"))

@@ -26,7 +26,7 @@ I forked Erin's GitHub repository and then used Git Bash (in a separate window f
 ```git push```\
 (enter the passcode I use to get files to GitHub)
 
-Then, in the bash window where I have Poseidon open,  I use this command:\
+Then, in the bash window where I have Poseidon open, change to the folder for this repository (UntargCode) and then use this command to move the files from GitHub to the HPC:\
 ```git pull https://github.com/KujawinskiLaboratory/UntargCode.git``` or just ```git pull```
 
 Remember that if I edit the README.md file here in GitHub (online), I need to do a local ```git pull``` before I can push any edits back to GitHub. I suspect there is a way around this with a more specific git command, but I haven't bothered to look into that.

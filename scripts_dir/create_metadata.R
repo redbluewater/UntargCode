@@ -22,7 +22,8 @@ pre <- paste0(usePath,"/")
 #mzdatafiles <- list.files(usePath,recursive = FALSE, full.names=TRUE, pattern=glob2rx(paste0("*",ionMode,"*",ext)))
 mzdatafiles <- list.files(usePath,recursive = FALSE, full.names=TRUE, pattern=glob2rx(paste0("*",ext)))
 
-# Read in list of all csv files from sequence methods and specificy ion Mode
+# Read in list of all csv files from sequence methods and specify ion Mode
+#remember - this file allows me to filter what will be processed and it sits with the mzML files in /omics/*/data/
 #csvfile <- list.files(usePath, recursive=FALSE, full.name=TRUE, pattern=glob2rx(paste0("*",ionMode,"*",".csv")))
 csvfile <- list.files(usePath, recursive=FALSE, full.name=TRUE, pattern=glob2rx(paste0("*",".csv")))
 

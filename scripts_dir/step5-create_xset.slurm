@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --partition=bigmem
+#SBATCH --partition=compute
 #SBATCH --job-name=create_xset
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks-per-node=1
-#SBATCH --mem=200gb
+#SBATCH --mem=100gb
 #SBATCH --time=1:00:00
 #SBATCH --output=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/create_xset.out
 #SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/create_xset.error

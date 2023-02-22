@@ -19,14 +19,17 @@ Once you are logged into Poseidon, activate the conda module with ```module load
 
 
 ## Moving around code - Windows 10 - GitHub - Poseidon (Krista's setup)
-I forked Erin's GitHub repository and then used Git Bash (in a separate window from the bash window I use to access Poseidon) to pull the GitHub repository onto my local desktop computer. On my local computer I use Geany to edit the text files. To get the files back to GitHub, I first had to futz around with setting up an SSH key in GitHub as I had not done that yet. I settled on using this set of commands to put the files I edit locally back into GitHub:
+I forked Erin's GitHub repository and then used Git Bash (in a separate window from the bash window I use to access Poseidon) to first clone the GitHub repository onto my local desktop computer. On my local computer I use Geany to edit the text files. To get the files back to GitHub, I first had to futz around with setting up an SSH key in GitHub as I had not done that yet. I settled on using this set of commands to put the files I edit locally back into GitHub:
 
 ```git add -A```\
 ```git commit -am "Brief description goes here"``` (can use the bit in quotes to describe the update)\
 ```git push```\
 (enter the passcode I use to get files to GitHub)
 
-Then, in the bash window where I have Poseidon open, change to the folder for this repository (UntargCode) and then use this command to move the files from GitHub to the HPC:\
+Then, in the bash window where I have Poseidon open, the first time I need to make a folder to hold the new repository. Then, clone that repository:\
+```git clone https://github.com/KujawinskiLaboratory/UntargCode```
+
+For later updates, just change to the folder for this repository (UntargCode) and then use this command to move the files from GitHub to the HPC:\
 ```git pull https://github.com/KujawinskiLaboratory/UntargCode.git``` or just ```git pull```
 
 Remember that if I edit the README.md file here in GitHub (online), I need to do a local ```git pull``` before I can push any edits back to GitHub. I suspect there is a way around this with a more specific git command, but I haven't bothered to look into that.

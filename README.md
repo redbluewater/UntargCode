@@ -67,6 +67,8 @@ Remember that each sbatch command creates a new compute environment, so all the 
 ## Step 1: Create metadata
 This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1, see exampleInfoFile.csv) It will also add an extra column to the metadata with the path of each mzml file that is useful for later. You may need to edit the string used to match files in the create_metadata.R script. Krista's file names did not have pos/neg in the name, but Erin's did. Also, if you change the files you want (by changing goodData), make sure old rds files are removed from the output_dir/xcms1. Any rds files in that folder will get read into the final data file.
 
+Before you run this, make a folder called logfiles_dir in your working folder on poseidon. I have yet to figure out how to get a script to do that, and it will fail without a place to put the logfiles.\
+
 Set this up to send in ionMode as a variable so I don't have to edit all the slurm scripts each time I change ion mode\
 ```sbatch --export=ionMode="pos" scripts_dir/step1-metadata.slurm```
 

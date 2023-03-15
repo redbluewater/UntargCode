@@ -122,6 +122,11 @@ You can also edit text files on the HPC, though I confused myself keeping track 
 Then, when you run into issues with files changing in mulitple places\
 ```git stash```
 
+Other handy git commands: syncing a fork\
+git fetch someRepository\
+git checkout master\
+git merge someRepository/master 
+
 ## Setting up to use Jupyter notebook remotely on HPC
 I thought I could avoid this, but in order to plot anything I needed to setup a way to access the data and the mzML files. I was tempted to mess around and change the paths in the R file, but then I would need to move 100 gb of files to my local computer. It took me multiple hoops to figure this out. Also, my local computer is running Windows 10, and I use Anaconda.\
 Log into the HPC site and activate the conda module with ```module load anaconda/5.1```\

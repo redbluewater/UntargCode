@@ -34,8 +34,8 @@ idx<-which(xset@phenoData$Sample.Name ==  paste0("AE2114 Sarg pool ",ionMode))
 xset@phenoData$subset.name <- "sample"
 xset@phenoData$subset.name[idx] <- "pool"
 
-# RT correction
-prm <- ObiwarpParam(subset= which(xset@phenoData$subset.name == "pool"), subsetAdjust="average", binSize = 0.1,distFun = "cor", gapInit = 0.3, gapExtend = 2.4)
+# RT correction; update bin size 
+prm <- ObiwarpParam(subset= which(xset@phenoData$subset.name == "pool"), subsetAdjust="average", binSize = 0.0005,distFun = "cor", gapInit = 0.3, gapExtend = 2.4)
 xset_obi <- adjustRtime(xset, param = prm, msLevel = 1L)
 
 save(list=c("xset_obi"), file = paste0(output_dir,"/xcms2_obi-",ionMode,".RData"))

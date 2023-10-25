@@ -26,7 +26,7 @@ I forked Erin's GitHub repository and then used Git Bash (in a separate window f
 ```git push```\
 (enter the passcode I use to get files to GitHub)
 
-Then, in the bash window where I have Poseidon open, the first time I need to make a folder to hold the new repository. Then, clone that repository:\
+Then, in the bash window where I have Poseidon open, clone that repository:\
 ```git clone https://github.com/KujawinskiLaboratory/UntargCode```
 
 For later updates, just change to the folder for this repository (UntargCode) and then use this command to move the files from GitHub to the HPC:\

@@ -53,6 +53,8 @@ You use conda to gather all the pieces you need: R and its various packages. For
 ```conda install bioconductor-camera=1.46.0```\
 ```conda env export > untargKL4.yml``` 
 
+Note that you can search for new packages in the event you need to expand this YML file this way: ```conda search *bioconductor-spectra*``` and then you can see all the package options available
+
 At this point you have your configuration file (the yml file), edit it locally to change the environment to be untargKL4 --> do this by setting the first row to ```name: untargKL4``` and at the very end of the file, edit this ```prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL4```. Then, go into the various slurm scripts which follow and change them all to read ```conda activate untargKL4```
 
 Install the conda environment via the yml file:\

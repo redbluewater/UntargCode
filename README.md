@@ -1,6 +1,6 @@
 # Pipeline for pre-processing a multi-batch untargeted exometabolome experiment with XCMS on a HPC
-15 February 2022\
-I (Krista) am working off the code written by Erin McParland and updating the information in the README file here as I go. I am a newbie to the HPC, so some details here may be obvious to others, but I needed more information before I could get started. 
+4 June 2023\
+Tidying up with minor edits to the readme file.
 
 Make sure to edit the slurm scripts so they send the email notifications to the right person. Also remember to edit the parameters in the R scripts to values appropriate for your experimental system.
 
@@ -65,7 +65,7 @@ Remember that each sbatch command creates a new compute environment, so all the 
 
 
 ## Step 1: Create metadata
-This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1, see exampleInfoFile.csv) It will also add an extra column to the metadata with the path of each mzml file that is useful for later. You may need to edit the string used to match files in the create_metadata.R script. Krista's file names did not have pos/neg in the name, but Erin's did. Also, if you change the files you want (by changing goodData), make sure old rds files are removed from the output_dir/xcms1. Any rds files in that folder will get read into the final data file.
+This is a quick R script to create a tab-delimited metadata file of all the sequence files (if you have multiple batches) and keep only the mzML files you want to peak pick and align (e.g. I remove the 9 conditioning pool samples here from each batch). Make sure you have added a column named ionMode (pos or neg) and goodData (0 or 1, see exampleInfoFile.csv) It will also add an extra column to the metadata with the path of each mzml file that is useful for later. You may need to edit the string used to match files in the create_metadata.R script. My file names did not have pos/neg in the name. Also, if you change the files you want (by changing goodData), make sure old rds files are removed from the output_dir/xcms1. Any rds files in that folder will get read into the final data file.
 
 Before you run this, make a folder called logfiles_dir in your working folder on poseidon. I have yet to figure out how to get a script to do that, and it will fail without a place to put the logfiles.\
 
@@ -78,7 +78,7 @@ Check how many files you have
 Use this number in Step 2 to set the total number of array jobs that will be run.
 
 ## Step 2: peak picking and peak shape evaluation
-Run the peak picking and peak shape on each file individually with an array job. This step is an 'embarassingly parallel' computation so I use a job array to quickly process hundreds of files. I run 40 jobs at a time and each jobs takes about 20 minutes each. I filter the peaks based on RMSE < 0.125 Then use peak cleaning functions to remove wide peaks (<40 s) and merge neighboring peaks. For 500 files, I am done with Step 3 in ~3 hours :clap: :grin: :clap:
+Run the peak picking and peak shape on each file individually with an array job. This step is an 'embarassingly parallel' computation so I use a job array to quickly process hundreds of files. I run 40 jobs at a time and each jobs takes about 20 minutes each. I filter the peaks based on RMSE < 0.125 Then use peak cleaning functions to remove wide peaks (<40 s) and merge neighboring peaks. For 500 files, it will take Step 3 about ~3 hours.
 
 ```sbatch --export=ionMode="pos" scripts_dir/step2-xcms1.slurm```
 

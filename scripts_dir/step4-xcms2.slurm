@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --partition=compute
+#SBATCH --partition=medmem
 #SBATCH --job-name=xcms2
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-user=klongnecker@whoi.edu
 #SBATCH --ntasks-per-node=36
-#SBATCH --mem=100gb
+#SBATCH --mem=200gb
 #SBATCH --time=6:00:00
 #SBATCH --output=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/xcms2.out
 #SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/xcms2.error

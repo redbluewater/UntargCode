@@ -8,7 +8,7 @@
 #SBATCH --time=6:00:00
 #SBATCH --output=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/xcms1.out
 #SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/xcms1.error
-#SBATCH --array=1-68%40 
+#SBATCH --array=1-15%15 
 
 #this is the numbers for Erin's 502 files do 1 to 502 files in batches of 40. If I use this, update to match what I have
 ###SBATCH --array=1-502%40 

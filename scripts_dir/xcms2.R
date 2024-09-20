@@ -1,11 +1,11 @@
 #KL updated 1/11/2022 to work with SargPatch samples
+#KL updated 9/20/2024 to work with interlab samples
 args = commandArgs(trailingOnly=TRUE)
 suppressMessages(library(xcms))
 suppressMessages(library(BiocParallel))
 suppressMessages(library(gtools))
 #will need some code from Johannes Rainer to make the export to GNPS work
 source("https://raw.githubusercontent.com/jorainer/xcms-gnps-tools/master/customFunctions.R")
-
 
 date()
 
@@ -30,12 +30,13 @@ bsize <- params['bsize',ionMode]
 load(file=paste0(input_dir,"/xset-",ionMode,".RData"))
 
 # Add variable for subsetting (KL note - generic beginning to sample names)
-idx<-which(xset@phenoData$Sample.Name ==  paste0("AE2114 Sarg pool ",ionMode))
-xset@phenoData$subset.name <- "sample"
-xset@phenoData$subset.name[idx] <- "pool"
+idx<-which(xset@phenoData$Sample.Name ==  paste0("M"))
+xset@phenoData$subset.name <- "other"
+xset@phenoData$subset.name[idx] <- "marine"
 
 # RT correction; update bin size (later note, 7/2024 setting binSize too small here may cause code to crash)
-prm <- ObiwarpParam(subset= which(xset@phenoData$subset.name == "pool"), subsetAdjust="average", binSize = 0.0005,distFun = "cor", gapInit = 0.3, gapExtend = 2.4)
+#bsize is a new addition from Erin McParland and Yuting Zhu 12/2022
+prm <- ObiwarpParam(subset= which(xset@phenoData$subset.name == "pool"), subsetAdjust="average", binSize = bsize,distFun = "cor", gapInit = 0.3, gapExtend = 2.4)
 xset_obi <- adjustRtime(xset, param = prm, msLevel = 1L)
 
 save(list=c("xset_obi"), file = paste0(output_dir,"/xcms2_obi-",ionMode,".RData"))
@@ -43,12 +44,11 @@ rm(xset)
 print("Completed xcms obiwarp")
 
 # Add variable for grouping(subsetting)
-idx<-which(xset_obi@phenoData$Sample.Name ==  paste0("AE2114 Sarg pool ",ionMode))
-xset_obi@phenoData$subset.name <- "sample"
-xset_obi@phenoData$subset.name[idx] <- "pool"
+idx<-which(xset_obi@phenoData$Sample.Name ==  paste0("M"))
+xset_obi@phenoData$subset.name <- "other"
+xset_obi@phenoData$subset.name[idx] <- "marine"
 
 # Grouping (KL note - generic beginning to sample names)
-#bsize is a new addition from Erin McParland and Yuting Zhu 12/2022
 pdp<-PeakDensityParam(sampleGroups = xset_obi@phenoData$subset.name, minFraction = 0.1, minSamples = 1, bw = bw, binSize = bsize)
 xset_gc<-groupChromPeaks(xset_obi, param = pdp)
 rm(xset_obi)
@@ -67,14 +67,14 @@ save(list=c("processedData"), file = paste0(output_dir,"/xcms2_final-",ionMode,"
 
 # Output all peaks and save
 allPeaks<-chromPeaks(processedData)
-write.csv(allPeaks, file = paste0(output_dir,"/SargPatch_untarg_",ionMode,"_picked.csv"))
+write.csv(allPeaks, file = paste0(output_dir,"/interlab_untarg_",ionMode,"_picked.csv"))
 
 # Output features and save
 featuresDef<-featureDefinitions(processedData)
 featuresIntensities<-featureValues(processedData, value = "into", method = "maxint")
 dataTable<-merge(featuresDef, featuresIntensities, by = 0, all = TRUE)
 dataTable <-dataTable[, !(colnames(dataTable) %in% c("peakidx"))]
-write.csv(dataTable, file = paste0(output_dir,"/SargPatch_untarg_",ionMode,"_aligned.csv"))
+write.csv(dataTable, file = paste0(output_dir,"/interlab_untarg_",ionMode,"_aligned.csv"))
 
 
 #start exporting files for GNPS (adding in 1/19/2022). Messy because I am

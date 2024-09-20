@@ -30,6 +30,7 @@ bsize <- params['bsize',ionMode]
 load(file=paste0(input_dir,"/xset-",ionMode,".RData"))
 
 # Add variable for subsetting (KL note - generic beginning to sample names)
+#for interlab do not have pooled samples; prior work has used pool v. sample
 idx<-which(xset@phenoData$Sample.Name ==  paste0("M"))
 xset@phenoData$subset.name <- "other"
 xset@phenoData$subset.name[idx] <- "marine"

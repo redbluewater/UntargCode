@@ -16,7 +16,7 @@
 dir="$HOME/UntargCode"
 cd "$dir"
 
-in_dir="/vortexfs1/omics/kujawinski/data/SargPatch/SargPatch_MSn"
+in_dir="/vortexfs1/omics/kujawinski/data/interlab/NEG_MSMS_mzML_updated"
 
 log_dir="$dir/logfiles_dir"
 #setup the places to hold stuff - NO - if this folder does not already 

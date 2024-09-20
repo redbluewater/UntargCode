@@ -10,7 +10,7 @@
 #SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/xcms2.error
 
 dir="$HOME/UntargCode"
-cd $dir
+#cd $dir
 
 in_dir="$dir/output_dir/xcms1"
 out_dir="$dir/output_dir/$SLURM_JOB_NAME"

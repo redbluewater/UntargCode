@@ -1,25 +1,25 @@
 #!/bin/bash
-#SBATCH --partition=medmem
+#SBATCH --partition=compute
 #SBATCH --job-name=xcms2
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-user=klongnecker@whoi.edu
-#SBATCH --ntasks-per-node=5
-#SBATCH --mem=500gb
-#SBATCH --time=6:00:00
+#SBATCH --ntasks=1
+#SBATCH --ntasks-per-node=15
+#SBATCH --mem=175gb
+#SBATCH --time=06:00:00
 #SBATCH --output=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/xcms2.out
 #SBATCH --error=/vortexfs1/home/klongnecker/UntargCode/logfiles_dir/xcms2.error
 
 dir="$HOME/UntargCode"
-cd $dir
 
-in_dir="$dir/output_dir/xcms1"
-out_dir="$dir/output_dir/$SLURM_JOB_NAME"
+in_dir="$HOME/UntargCode/output_dir/xcms1"
+out_dir="$HOME/UntargCode/output_dir/$SLURM_JOB_NAME"
+
+log_dir="$dir/logfiles_dir"  
 
 if [ ! -d "$out_dir" ]; then
     mkdir -p "$out_dir"
 fi
-
-log_dir="$dir/logfiles_dir" 
 
 echo `date`
 echo This is job $SLURM_JOB_ID

@@ -37,7 +37,7 @@ xset@phenoData$subset.name[idx] <- "marine"
 
 # RT correction; update bin size (later note, 7/2024 setting binSize too small here may cause code to crash)
 #bsize is a new addition from Erin McParland and Yuting Zhu 12/2022
-prm <- ObiwarpParam(subset= which(xset@phenoData$subset.name == "pool"), subsetAdjust="average", binSize = bsize,distFun = "cor", gapInit = 0.3, gapExtend = 2.4)
+prm <- ObiwarpParam(subset= which(xset@phenoData$subset.name == "marine"), subsetAdjust="average", binSize = bsize,distFun = "cor", gapInit = 0.3, gapExtend = 2.4)
 xset_obi <- adjustRtime(xset, param = prm, msLevel = 1L)
 
 save(list=c("xset_obi"), file = paste0(output_dir,"/xcms2_obi-",ionMode,".RData"))

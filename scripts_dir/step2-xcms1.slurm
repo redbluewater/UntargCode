@@ -18,7 +18,7 @@
 dir="$HOME/UntargCode"
 cd "$dir"
 
-in_dir="/vortexfs1/omics/kujawinski/data/interlab/NEG_MSMS_mzML_updated"
+in_dir="/vortexfs1/omics/kujawinski/data/interlab"
 out_dir="$dir/output_dir/$SLURM_JOB_NAME"
 log_dir="$dir/logfiles_dir/$SLURM_JOB_NAME" #need a folder to hold the output results text files - there are zillions of them. 
 

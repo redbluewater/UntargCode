@@ -26,7 +26,7 @@ I forked Erin's GitHub repository and then used Git Bash (in a separate window f
 ```git push```\
 (enter the passcode I use to get files to GitHub)
 
-Then, in the bash window where I have Poseidon open, the first time I need to make a folder to hold the new repository. Then, clone that repository:\
+Then, in the bash window where I have Poseidon open, clone that repository:\
 ```git clone https://github.com/KujawinskiLaboratory/UntargCode```
 
 For later updates, just change to the folder for this repository (UntargCode) and then use this command to move the files from GitHub to the HPC:\
@@ -52,6 +52,8 @@ You use conda to gather all the pieces you need: R and its various packages. For
 ```conda install r-gtools```\
 ```conda install bioconductor-camera=1.46.0```\
 ```conda env export > untargKL4.yml``` 
+
+Note that you can search for new packages in the event you need to expand this YML file this way: ```conda search *bioconductor-spectra*``` and then you can see all the package options available
 
 At this point you have your configuration file (the yml file), edit it locally to change the environment to be untargKL4 --> do this by setting the first row to ```name: untargKL4``` and at the very end of the file, edit this ```prefix: /vortexfs1/home/klongnecker/.conda/envs/untargKL4```. Then, go into the various slurm scripts which follow and change them all to read ```conda activate untargKL4```
 
